@@ -1,0 +1,8 @@
+node_modules
+dist
+.DS_Store
+*.log
+
+# Client PDFs, WhatsApp photos/videos with personal data (names, a minor's photo,
+# and one PDF with a real bank account number) — not meant for a public/shared repo.
+already plan/

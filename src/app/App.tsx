@@ -1,13 +1,14 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import {
   Menu, X, ArrowRight, ChevronDown, ChevronUp,
-  Check, Star, MapPin, Clock,
-  Mail, Phone, Instagram, CheckCircle2, User,
+  Check, MapPin, Clock,
+  Mail, Phone, Instagram, User, MessageCircle,
+  Mic, Square, Send,
 } from "lucide-react";
-import { Toaster, toast } from "sonner";
+import { Toaster } from "sonner";
 import "../styles/fonts.css";
-import tuanAnhAvatar from "../assets/team/tuan-anh-full.jpg";
-import tuanAnhPortrait from "../assets/team/tuan-anh-portrait.jpg";
+import tuanAnhAvatar from "../assets/team/tuan-anh-new.jpg";
+import tuanAnhPortrait from "../assets/team/tuan-anh-portrait-new.jpg";
 import chauAnhPortrait from "../assets/team/chau-anh-portrait.jpg";
 import chauAnhAvatar from "../assets/team/chau-anh-full.jpg";
 import mekongSunsetBoat from "../assets/trips/mekong-sunset-boat.jpg";
@@ -30,6 +31,12 @@ const TEAM = [
     role: "Founder",
     region: "Hồ Chí Minh City",
     photo: tuanAnhAvatar,
+  },
+  {
+    name: "Châu Anh",
+    role: "Co-Founder",
+    region: "",
+    photo: chauAnhAvatar,
   },
   {
     name: "Bảo Trân",
@@ -239,6 +246,72 @@ const ITINERARY_GRAND = [
   },
 ];
 
+const ITINERARY_HAGIANG = [
+  {
+    day: 1,
+    location: "Hanoi",
+    title: "Arrival & a slow introduction to the Old Quarter",
+    note: "Airport pick-up straight to a small hotel in the Old Quarter — time to rest and shower after the flight before anything starts. Late afternoon is a walk through the tube houses and trades that still name the streets, an egg coffee break at a working local café, and sunset by Hoan Kiem Lake. A welcome dinner of northern home cooking closes out the day, one short walk from the hotel. — Tuấn Anh",
+    photo: "https://images.unsplash.com/photo-1611195328596-d8dcf57f5cea?w=400&h=400&fit=crop&auto=format",
+  },
+  {
+    day: 2,
+    location: "Hanoi",
+    title: "Culture at a gentle pace",
+    note: "Morning at the Temple of Literature, early enough to beat the school groups, then coffee in the shade of the courtyard trees. After lunch in Ba Dinh, the Museum of Ethnology gives you real context for the hill communities you'll meet later in Ha Giang. The late afternoon is free — a quiet walk around West Lake, or water puppet theatre if you'd rather have something scheduled. — Tuấn Anh",
+    photo: "https://images.unsplash.com/photo-1611195328596-d8dcf57f5cea?w=400&h=400&fit=crop&auto=format",
+  },
+  {
+    day: 3,
+    location: "Transfer to Ninh Bình & Tràng An",
+    title: "Into the rice fields and limestone valleys",
+    note: "About two hours by private car to a garden homestay among the rice fields, with mountain views from the room. In the afternoon, a rower takes you through Tràng An's flooded caves and between limestone karsts — roughly two and a half hours, all of it seated. Dinner is local goat, river fish, and rice grown in the field you can see from the terrace. — Tuấn Anh",
+    photo: "https://images.unsplash.com/photo-1626743656249-5d8fa287b941?w=400&h=400&fit=crop&auto=format",
+  },
+  {
+    day: 4,
+    location: "Ninh Bình countryside & Hoa Lư",
+    title: "The ancient capital, then a quieter lagoon",
+    note: "Morning at Hoa Lư, the tenth-century capital of Vietnam, followed by a gentle bike ride or short drive through Bích Động and the back lanes between the paddies — flat ground, entirely optional. The afternoon boat ride on Vân Long lagoon is shallower and far less visited than Tràng An, with a good chance of spotting the endangered Delacour's langur on the cliffs. Climbing the roughly 500 steps of Hang Múa for the valley view is there if you want it, and just as easy to skip. — Tuấn Anh",
+    photo: "https://images.unsplash.com/photo-1503539680555-732099a55a56?w=400&h=400&fit=crop&auto=format",
+  },
+  {
+    day: 5,
+    location: "North to Hà Giang city",
+    title: "The long transfer day",
+    note: "Seven to eight hours on the road from Ninh Bình to Hà Giang city, broken up with generous stops for coffee, lunch and legs. The route runs through the tea country of Tuyên Quang, with a lunch stop at a riverside restaurant we use regularly. After checking in, an early dinner in town and a short briefing on what the mountain days need from you — border-area registration, what to pack, what the weather is doing. — Tuấn Anh",
+    photo: "https://images.unsplash.com/photo-1670654534716-91f59fe06a26?w=400&h=400&fit=crop&auto=format",
+  },
+  {
+    day: 6,
+    location: "Quản Bạ, Yên Minh & the road to Đồng Văn",
+    title: "A driving day made of viewpoints, not distance",
+    note: "A relaxed 9am start to Heaven's Gate at Quản Bạ and the Twin Mountains below, then a hillside coffee stop looking down the valley. After lunch in Yên Minh, the drive climbs through pine ridges into Đồng Văn, stopping wherever the light is good. You check into a restored stone house or a comfortable local hotel by late afternoon, then dinner and a walk through Đồng Văn's old quarter, quiet and lamplit after dark. — Tuấn Anh",
+    photo: "https://images.unsplash.com/photo-1685584280839-a51ba5a1908d?w=400&h=400&fit=crop&auto=format",
+  },
+  {
+    day: 7,
+    location: "Lũng Cú, Mã Pí Lèng & the Nho Quế river",
+    title: "The most dramatic day of the trip",
+    note: "Morning at Lũng Cú, the northernmost point of Vietnam, and its flag tower. After lunch back in Đồng Văn, the afternoon covers Mã Pí Lèng — the most dramatic stretch of road in the country — with a boat trip on the Nho Quế river through Tu Sản canyon: an hour on flat green water beneath the highest cliffs in Vietnam, and the calmest part of the whole trip. You return to the same hotel in Đồng Văn for a second night — no packing, no moving on. — Tuấn Anh",
+    photo: "https://images.unsplash.com/photo-1686755660203-55781dbc2f24?w=400&h=400&fit=crop&auto=format",
+  },
+  {
+    day: 8,
+    location: "Market morning & return to Hà Giang",
+    title: "Hill markets, then back down the mountain",
+    note: "If your dates land on a Sunday, this morning is built around the Đồng Văn or Mèo Vạc market — hill communities arriving on foot from the surrounding valleys from around 6am. From there it's the drive back down through Mèo Vạc and Mậu Duệ to Hà Giang city, with stops along the way and lunch on the road. A farewell dinner in town closes out the mountain leg of the trip. — Tuấn Anh",
+    photo: "https://images.unsplash.com/photo-1761985747469-64dfba0906c0?w=400&h=400&fit=crop&auto=format",
+  },
+  {
+    day: 9,
+    location: "Return to Hanoi & departure",
+    title: "The long way back, at the same relaxed pace",
+    note: "A relaxed departure and around six hours by private car back to Hanoi, with stops along the way — including an optional village stop for lunch and a walk. Drop-off is at your Hanoi hotel, the airport, or onward to your next stop in Vietnam. A late room and shower before a night flight can be arranged on request. — Tuấn Anh",
+    photo: "https://images.unsplash.com/photo-1611195328596-d8dcf57f5cea?w=400&h=400&fit=crop&auto=format",
+  },
+];
+
 const TRIPS = [
   {
     id: "mekong-condao",
@@ -342,11 +415,57 @@ const TRIPS = [
     ],
     notIncluded: "Not included: international flights, meals unless noted, visa fees, and tips.",
   },
+  {
+    id: "north-vietnam-hagiang",
+    name: "Relaxed North Vietnam: Hanoi, Ninh Bình & Hà Giang",
+    duration: "9 days",
+    region: "Hanoi, Ninh Bình & Hà Giang",
+    priceFrom: 730,
+    vetter: TEAM[0],
+    vettedDate: "September 2026",
+    photo: "https://images.unsplash.com/photo-1686755660203-55781dbc2f24?w=900&h=620&fit=crop&auto=format",
+    tagline: "Two easy days in Hanoi, quiet limestone valleys in Ninh Bình, then four days on the Hà Giang loop by private car — built for a relaxed pace, not a rush.",
+    madeFor: "Hellen and her girlfriend",
+    itinerary: ITINERARY_HAGIANG,
+    gallery: [
+      { src: "https://images.unsplash.com/photo-1686755660203-55781dbc2f24?w=1400&h=900&fit=crop&auto=format", alt: "The Nho Quế river cutting through Tu Sản canyon below Mã Pí Lèng pass", caption: "Tu Sản canyon, on the Nho Quế river below Mã Pí Lèng." },
+      { src: "https://images.unsplash.com/photo-1670654534716-91f59fe06a26?w=1400&h=900&fit=crop&auto=format", alt: "Golden rice terraces in the Hà Giang highlands", caption: "Terraces on the road into Hà Giang." },
+      { src: "https://images.unsplash.com/photo-1626743656249-5d8fa287b941?w=1400&h=900&fit=crop&auto=format", alt: "A pagoda on the water at Tràng An, Ninh Bình, surrounded by limestone karsts", caption: "Tràng An, Ninh Bình." },
+    ],
+    description: "Nine days built for travellers who want to see the north without rushing: two easy days in Hanoi, two days in the rice fields and limestone valleys of Ninh Bình, and four days on the Hà Giang mountain loop with a private driver instead of a motorbike. Every day leaves room to sit down, drink coffee, and watch the place go by. The mountain roads are spectacular and genuinely winding — we build in short driving legs of two to three hours maximum between stops, front-seat rotation, and unhurried stops. Can be shortened to 7 days or extended to 11.",
+    included: [
+      { label: "Private car & driver", detail: "An experienced mountain driver for the full route, from Hanoi airport to the final drop-off — including fuel, tolls and parking. No motorbikes, no shared minibuses." },
+      { label: "English-speaking guide", detail: "A guide for the full itinerary, from Hanoi through to Hà Giang." },
+      { label: "Accommodation", detail: "Hotels, homestay and eco-lodge across Hanoi, Ninh Bình and Hà Giang, in properties our team has stayed in." },
+      { label: "Border-area permits", detail: "Registration for the Đồng Văn and Lũng Cú districts, handled in advance." },
+      { label: "Boat trips & entrance fees", detail: "Tràng An, Vân Long and the Nho Quế river, plus welcome and farewell dinners." },
+    ],
+    notIncluded: "Not included: international and domestic flights, travel insurance, most meals and drinks, personal expenses and tips, and visa fees.",
+  },
 ];
 
 const PLANNING_FEE = 199;
-const openInstagramDM = () => window.open("https://ig.me/m/vietnamesehangout", "_blank", "noopener,noreferrer");
+// Approximate USD → VND rate — update periodically, not a live feed.
+const USD_TO_VND = 25000;
+const formatPrice = (usd: number, currency: "USD" | "VND") => {
+  if (currency === "VND") {
+    return `₫${Math.round(usd * USD_TO_VND).toLocaleString("en-US")}`;
+  }
+  return `$${usd.toLocaleString("en-US")}`;
+};
+const EXAMPLE_PROMPTS = [
+  "10 days in Vietnam with amazing food",
+  "Adventurous coffee tour in Đà Lạt",
+  "A relaxed 9-day loop through Hà Giang",
+  "A family trip to the Mekong Delta & Côn Đảo",
+  "Grand tour of Vietnam for Christmas",
+];
 const openInstagramProfile = () => window.open("https://instagram.com/vietnamesehangout", "_blank", "noopener,noreferrer");
+const WHATSAPP_NUMBER = "84772751430";
+const openWhatsApp = (text?: string) => {
+  const url = `https://wa.me/${WHATSAPP_NUMBER}${text ? `?text=${encodeURIComponent(text)}` : ""}`;
+  window.open(url, "_blank", "noopener,noreferrer");
+};
 
 const FAQS = [
   {
@@ -400,7 +519,7 @@ function VetterChip({ vetter, small }: { vetter: typeof TEAM[0]; small?: boolean
       <img
         src={vetter.photo}
         alt={vetter.name}
-        className={`${small ? "w-5 h-5" : "w-7 h-7"} rounded-full object-contain bg-[#E5E0D6] flex-shrink-0`}
+        className={`${small ? "w-5 h-5" : "w-7 h-7"} rounded-full object-cover bg-[#E5E0D6] flex-shrink-0`}
       />
       <span style={{ fontFamily: S }} className={`${small ? "text-[11px]" : "text-sm"} text-[#6B6457]`}>
         Vetted by <span className="font-semibold text-[#191713]">{vetter.name}</span>
@@ -495,6 +614,7 @@ function SectionLabel({ num, label }: { num: string; label: string }) {
 
 const LANGUAGES = [
   { code: "EN", label: "English", flag: "🇺🇸" },
+  { code: "VI", label: "Tiếng Việt", flag: "🇻🇳" },
   { code: "FR", label: "Français", flag: "🇫🇷" },
   { code: "ES", label: "Español", flag: "🇪🇸" },
   { code: "ZH", label: "中文", flag: "🇨🇳" },
@@ -502,16 +622,41 @@ const LANGUAGES = [
   { code: "KO", label: "한국어", flag: "🇰🇷" },
 ];
 
+// Maps the site's language switcher to a BCP-47 tag for the Web Speech API.
+const SPEECH_LANG_MAP: Record<string, string> = {
+  EN: "en-US",
+  VI: "vi-VN",
+  FR: "fr-FR",
+  ES: "es-ES",
+  ZH: "zh-CN",
+  RU: "ru-RU",
+  KO: "ko-KR",
+};
+
 function Nav({
   setPage,
+  language,
+  setLanguage,
+  currency,
+  setCurrency,
 }: {
   setPage: (p: string) => void;
+  language: typeof LANGUAGES[0];
+  setLanguage: (l: typeof LANGUAGES[0]) => void;
+  currency: "VND" | "USD";
+  setCurrency: (c: "VND" | "USD") => void;
 }) {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [openMenu, setOpenMenu] = useState<"currency" | "language" | "temp" | "account" | null>(null);
-  const [currency, setCurrency] = useState<"VND" | "USD">("VND");
-  const [language, setLanguage] = useState(LANGUAGES[0]);
   const [tempUnit, setTempUnit] = useState<"C" | "F">("C");
+  const [scrolled, setScrolled] = useState(false);
+
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 20);
+    onScroll();
+    window.addEventListener("scroll", onScroll);
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
 
   const go = (page: string) => {
     setPage(page);
@@ -528,7 +673,13 @@ function Nav({
 
   return (
     <>
-      <header className="fixed top-0 left-0 right-0 z-50 bg-white/90 backdrop-blur-md border-b border-[rgba(25,23,19,0.08)] shadow-sm">
+      <header
+        className={`fixed top-0 left-0 right-0 z-50 transition-colors duration-300 ${
+          scrolled
+            ? "bg-white/90 backdrop-blur-md border-b border-[rgba(25,23,19,0.08)] shadow-sm"
+            : "bg-transparent border-b border-transparent"
+        }`}
+      >
         <div className="max-w-[1440px] mx-auto px-6 md:px-16 h-[60px] flex items-center justify-between">
           <button onClick={() => go("home")} className="flex items-center">
             <img src={logo} alt="Vietnamese Hangout" className="w-9 h-9 object-contain" />
@@ -577,7 +728,7 @@ function Nav({
             </div>
 
             {/* Temperature */}
-            <button onClick={() => setTempUnit(tempUnit === "C" ? "F" : "C")} className={pillClass}>
+            <button onClick={() => setTempUnit((u) => (u === "C" ? "F" : "C"))} className={pillClass}>
               °{tempUnit}
             </button>
 
@@ -650,7 +801,7 @@ function Nav({
               <div>
                 <p className="text-[10px] uppercase tracking-wider text-[#6B6457] mb-2">Temperature</p>
                 <button
-                  onClick={() => setTempUnit(tempUnit === "C" ? "F" : "C")}
+                  onClick={() => setTempUnit((u) => (u === "C" ? "F" : "C"))}
                   className="text-[13px] px-3 py-1.5 rounded-full border border-[rgba(25,23,19,0.15)] text-[#191713]"
                 >
                   °{tempUnit}
@@ -763,63 +914,144 @@ function Footer({ setPage }: { setPage: (p: string) => void }) {
 
 // ─── Home page ───────────────────────────────────────────────────────────────
 
-function HomePage({ setPage, setSelectedTripId }: { setPage: (p: string) => void; setSelectedTripId: (id: string) => void }) {
+function HomePage({ setPage, setSelectedTripId, language, currency }: { setPage: (p: string) => void; setSelectedTripId: (id: string) => void; language: typeof LANGUAGES[0]; currency: "VND" | "USD" }) {
   const [message, setMessage] = useState("");
+  const [isListening, setIsListening] = useState(false);
+  const [micError, setMicError] = useState<string | null>(null);
+  const recognitionRef = useRef<any>(null);
+  const baseMessageRef = useRef("");
+  const finalTranscriptRef = useRef("");
 
-  const sendToInstagram = async () => {
-    const trimmed = message.trim();
-    if (trimmed) {
-      try {
-        await navigator.clipboard.writeText(trimmed);
-        toast.success("Message copied — paste it into the Instagram DM that just opened.");
-      } catch {
-        toast("Instagram opened — type your trip idea there.");
+  // Typewriter placeholder — cycles through real trip ideas to nudge visitors on what to type.
+  const [promptIdx, setPromptIdx] = useState(0);
+  const [charIdx, setCharIdx] = useState(0);
+  const [deleting, setDeleting] = useState(false);
+
+  useEffect(() => {
+    if (isListening) return;
+    const current = EXAMPLE_PROMPTS[promptIdx];
+    const atEnd = !deleting && charIdx === current.length;
+    const atStart = deleting && charIdx === 0;
+    const delay = atEnd ? 1800 : atStart ? 400 : deleting ? 25 : 45;
+
+    const timeout = setTimeout(() => {
+      if (atEnd) {
+        setDeleting(true);
+      } else if (atStart) {
+        setDeleting(false);
+        setPromptIdx((i) => (i + 1) % EXAMPLE_PROMPTS.length);
+      } else {
+        setCharIdx((i) => i + (deleting ? -1 : 1));
       }
+    }, delay);
+
+    return () => clearTimeout(timeout);
+  }, [charIdx, deleting, promptIdx, isListening]);
+
+  const typedPlaceholder = EXAMPLE_PROMPTS[promptIdx].slice(0, charIdx);
+
+  const toggleListening = () => {
+    if (isListening) {
+      recognitionRef.current?.stop();
+      return;
     }
-    openInstagramDM();
+    const SpeechRecognitionCtor = (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition;
+    if (!SpeechRecognitionCtor) {
+      setMicError("Voice input isn't supported in this browser — try Chrome, Edge or Safari.");
+      return;
+    }
+    setMicError(null);
+    baseMessageRef.current = message.trim();
+    finalTranscriptRef.current = "";
+    const recognition = new SpeechRecognitionCtor();
+    recognition.lang = SPEECH_LANG_MAP[language.code] || "en-US";
+    recognition.continuous = true;
+    recognition.interimResults = true;
+    recognition.onresult = (event: any) => {
+      let interimTranscript = "";
+      for (let i = event.resultIndex; i < event.results.length; i++) {
+        const transcript = event.results[i][0].transcript;
+        if (event.results[i].isFinal) {
+          finalTranscriptRef.current += transcript;
+        } else {
+          interimTranscript += transcript;
+        }
+      }
+      const combined = [baseMessageRef.current, finalTranscriptRef.current, interimTranscript]
+        .map((s) => s.trim())
+        .filter(Boolean)
+        .join(" ");
+      setMessage(combined);
+    };
+    recognition.onerror = (event: any) => {
+      setMicError(event.error === "not-allowed" ? "Microphone access denied — check your browser permissions." : "Couldn't hear that — try again.");
+      setIsListening(false);
+    };
+    recognition.onend = () => setIsListening(false);
+    recognition.start();
+    recognitionRef.current = recognition;
+    setIsListening(true);
+  };
+
+  const sendMessage = () => {
+    openWhatsApp(message.trim() || undefined);
+    setMessage("");
   };
 
   return (
     <div className="bg-white">
-      {/* Hero — soft green-tinted gradient, message box front and center */}
-      <section className="relative w-full overflow-hidden px-6 md:px-16 pt-24 pb-16 md:pt-32 md:pb-24">
-        <div className="absolute inset-0 bg-gradient-to-b from-[#E4EFE9] to-white" />
-        <div className="absolute -top-32 -left-24 w-[420px] h-[420px] rounded-full bg-[#004226]/10 blur-3xl" />
-        <div className="absolute top-10 -right-24 w-[380px] h-[380px] rounded-full bg-[#004226]/8 blur-3xl" />
+      {/* Hero + Trip strip — one continuous bold green gradient wash, no seam between them */}
+      <div className="relative overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-b from-[#C3DFD1] via-[#E4EFE9] to-white" />
+        <div className="absolute -top-32 -left-24 w-[460px] h-[460px] rounded-full bg-[#004226]/18 blur-3xl" />
+        <div className="absolute top-10 -right-24 w-[420px] h-[420px] rounded-full bg-[#004226]/16 blur-3xl" />
+
+      <section className="relative w-full px-6 md:px-16 pt-20 pb-10 md:pt-24 md:pb-14">
         <div className="relative max-w-[880px] mx-auto text-center">
           <h1
             style={{ fontFamily: F, lineHeight: 1.05 }}
-            className="text-[clamp(36px,6vw,72px)] font-extrabold text-[#191713] mb-6 tracking-[-0.02em]"
+            className="text-[clamp(26px,4vw,48px)] font-extrabold text-[#191713] mb-6 tracking-[-0.02em]"
           >
-            Vietnam, planned by<br />people who live it.
+            Uncover unique trips in Vietnam,<br />tailored just for you
           </h1>
-          <p style={{ fontFamily: S }} className="text-[16px] text-[#6B6457] leading-relaxed mb-10 max-w-lg mx-auto">
-            Every place we recommend has been physically checked by a named member of our team across Vietnam. No algorithm. No sponsored listings.
-          </p>
 
-          {/* Instagram message box */}
-          <div className="max-w-xl mx-auto mb-3">
-            <div className="bg-white rounded-3xl shadow-lg p-2 flex items-center gap-2">
-              <input
+          {/* WhatsApp message box */}
+          <div className="max-w-2xl mx-auto mb-3">
+            <div className="bg-white rounded-[28px] shadow-lg p-4 flex flex-col gap-3 min-h-[130px]">
+              <textarea
                 value={message}
                 onChange={(e) => setMessage(e.target.value)}
-                onKeyDown={(e) => { if (e.key === "Enter") sendToInstagram(); }}
-                placeholder="Message us on Instagram — tell us your trip idea…"
+                onKeyDown={(e) => { if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); sendMessage(); } }}
+                placeholder={isListening ? "Listening… speak your trip idea" : (typedPlaceholder || " ")}
+                rows={2}
                 style={{ fontFamily: S }}
-                className="flex-1 min-w-0 px-5 py-4 rounded-2xl outline-none text-[#191713] bg-transparent placeholder:text-[#6B6457]/50 text-sm"
+                className="w-full flex-1 resize-none outline-none text-[#191713] bg-transparent placeholder:text-[#191713]/70 text-sm text-left"
               />
-              <button
-                onClick={sendToInstagram}
-                aria-label="Message us on Instagram"
-                style={{ fontFamily: S }}
-                className="w-11 h-11 rounded-full bg-[#004226] text-white flex items-center justify-center flex-shrink-0 hover:bg-[#00331E] transition-colors"
-              >
-                <Instagram size={17} />
-              </button>
+              <div className="flex items-center justify-between">
+                <button
+                  onClick={toggleListening}
+                  aria-label={isListening ? "Stop voice input" : "Speak your message"}
+                  className={`w-9 h-9 rounded-full flex items-center justify-center flex-shrink-0 transition-colors ${isListening ? "bg-red-500 text-white animate-pulse" : "text-[#6B6457] hover:text-[#191713] hover:bg-[#F5F2EC]"}`}
+                >
+                  {isListening ? <Square size={15} /> : <Mic size={17} />}
+                </button>
+                <button
+                  onClick={sendMessage}
+                  style={{ fontFamily: S }}
+                  className="bg-[#004226] text-white rounded-full pl-5 pr-4 py-3 text-sm font-bold flex items-center gap-2 flex-shrink-0 hover:bg-[#00331E] transition-colors"
+                >
+                  Start planning <Send size={15} />
+                </button>
+              </div>
             </div>
+            {micError && (
+              <p style={{ fontFamily: S }} className="text-xs text-red-600 mt-2">
+                {micError}
+              </p>
+            )}
           </div>
-          <p style={{ fontFamily: S }} className="text-xs text-[#6B6457] mb-12">
-            We reply on Instagram, usually within a few hours.
+          <p style={{ fontFamily: S }} className="text-[15px] text-[#6B6457] leading-relaxed mb-12 max-w-lg mx-auto">
+            We build every itinerary around what you actually want — then a named local checks it before you pay.
           </p>
 
           <div className="flex items-center justify-center gap-6 sm:gap-10 flex-wrap">
@@ -848,31 +1080,37 @@ function HomePage({ setPage, setSelectedTripId }: { setPage: (p: string) => void
       </section>
 
       {/* Trip strip */}
-      <section className="px-6 md:px-16 py-16 md:py-24 bg-[#FAF9F7]">
+      <section className="relative px-6 md:px-16 pt-2 pb-10 md:pt-4 md:pb-14">
         <div className="max-w-[1440px] mx-auto">
-          <div className="text-center max-w-lg mx-auto mb-10">
+          <div className="text-center max-w-lg mx-auto mb-8">
             <h2 style={{ fontFamily: F }} className="text-3xl font-bold text-[#191713] mb-2">Trips shaped around Vietnam</h2>
-            <p style={{ fontFamily: S }} className="text-sm text-[#6B6457]">Every one vetted in person by a named local before it goes on the site.</p>
+            <p style={{ fontFamily: S }} className="text-sm text-[#6B6457]">Every spot vetted in person by a named local before it goes on the site.</p>
           </div>
-          <div className="flex gap-5 overflow-x-auto pb-4 -mx-6 px-6 md:mx-0 md:px-0">
-            {TRIPS.map((t) => (
-              <button
-                key={t.id}
-                onClick={() => { setSelectedTripId(t.id); setPage("trip"); window.scrollTo({ top: 0 }); }}
-                className="relative flex-shrink-0 w-[240px] md:w-[270px] rounded-3xl overflow-hidden text-left group"
-                style={{ height: 340 }}
-              >
-                <img src={t.photo} alt={t.name} className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent" />
-                <span style={{ fontFamily: S }} className="absolute top-4 right-4 bg-white/90 text-[#191713] text-[11px] font-semibold px-3 py-1 rounded-full">
-                  {t.duration}
-                </span>
-                <div className="absolute bottom-0 left-0 right-0 p-5">
-                  <p style={{ fontFamily: F }} className="text-white font-bold text-lg leading-snug mb-1">{t.name}</p>
-                  <p style={{ fontFamily: S }} className="text-white/70 text-xs">Made for {t.madeFor}</p>
-                </div>
-              </button>
-            ))}
+          <div className="overflow-hidden -mx-6 px-6 md:mx-0 md:px-0">
+            <div className="flex gap-5 pb-4 w-max animate-marquee">
+              {["a", "b"].map((copy) => (
+                <React.Fragment key={copy}>
+                  {TRIPS.map((t) => (
+                    <button
+                      key={`${copy}-${t.id}`}
+                      onClick={() => { setSelectedTripId(t.id); setPage("trip"); window.scrollTo({ top: 0 }); }}
+                      className="relative flex-shrink-0 w-[240px] md:w-[270px] rounded-3xl overflow-hidden text-left group"
+                      style={{ height: 340 }}
+                    >
+                      <img src={t.photo} alt={t.name} className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent" />
+                      <span style={{ fontFamily: S }} className="absolute top-4 right-4 bg-white/90 text-[#191713] text-[11px] font-semibold px-3 py-1 rounded-full">
+                        {t.duration}
+                      </span>
+                      <div className="absolute bottom-0 left-0 right-0 p-5">
+                        <p style={{ fontFamily: F }} className="text-white font-bold text-lg leading-snug mb-1">{t.name}</p>
+                        <p style={{ fontFamily: S }} className="text-white/70 text-xs">Made for {t.madeFor}</p>
+                      </div>
+                    </button>
+                  ))}
+                </React.Fragment>
+              ))}
+            </div>
           </div>
           <div className="flex justify-center mt-10">
             <button
@@ -885,8 +1123,9 @@ function HomePage({ setPage, setSelectedTripId }: { setPage: (p: string) => void
           </div>
         </div>
       </section>
+      </div>
 
-      {/* Instagram + human duo */}
+      {/* WhatsApp + human duo */}
       <section className="relative overflow-hidden px-6 md:px-16 py-20 md:py-28">
         <div className="absolute inset-0 bg-gradient-to-b from-white to-[#E4EFE9]" />
         <div className="relative max-w-[1440px] mx-auto">
@@ -895,41 +1134,49 @@ function HomePage({ setPage, setSelectedTripId }: { setPage: (p: string) => void
               Fast to reach. Real when it matters.
             </h2>
             <p style={{ fontFamily: S }} className="text-[15px] text-[#6B6457] leading-relaxed">
-              Message us on Instagram with what you&apos;re picturing. A named local — not a bot, not a queue — replies and starts shaping the trip with you.
+              Message us on WhatsApp with what you&apos;re picturing. Our team members will start shaping the trip with you.
             </p>
           </div>
 
-          <div className="max-w-[1100px] mx-auto relative rounded-3xl overflow-hidden" style={{ height: 420 }}>
-            <img
-              src="https://images.unsplash.com/photo-1609412058473-c199497c3c5d?w=1400&h=900&fit=crop&auto=format"
-              alt="Rice terraces in the northern highlands"
-              className="absolute inset-0 w-full h-full object-cover"
-            />
-            <div className="absolute top-6 left-6 right-6 md:right-auto bg-white rounded-2xl shadow-lg p-4 max-w-xs flex gap-3">
-              <div className="w-9 h-9 rounded-full bg-[#004226] text-white flex items-center justify-center flex-shrink-0">
-                <Instagram size={16} />
+          <div className="max-w-[1100px] mx-auto relative" style={{ paddingTop: 24, paddingBottom: 24 }}>
+            <div className="relative rounded-3xl overflow-hidden" style={{ height: 420 }}>
+              <img
+                src="https://images.unsplash.com/photo-1609412058473-c199497c3c5d?w=1400&h=900&fit=crop&auto=format"
+                alt="Rice terraces in the northern highlands"
+                className="absolute inset-0 w-full h-full object-cover"
+              />
+            </div>
+
+            <div className="absolute -top-2 left-4 md:left-10 flex items-end gap-0">
+              <div className="w-16 h-16 rounded-full bg-[#004226] text-white flex items-center justify-center flex-shrink-0 shadow-lg z-10 -mr-4 mb-1">
+                <MessageCircle size={26} />
               </div>
-              <div>
-                <p style={{ fontFamily: S }} className="text-[11px] font-semibold text-[#6B6457] mb-1">Vietnamese Hangout</p>
-                <p style={{ fontFamily: S }} className="text-[13px] text-[#191713] leading-snug">DM us anytime — we usually reply within a few hours.</p>
+              <div className="bg-white rounded-2xl shadow-xl p-5 max-w-sm">
+                <p style={{ fontFamily: S }} className="text-sm font-semibold text-[#004226] mb-1.5">Vietnamese Hangout</p>
+                <p style={{ fontFamily: S }} className="text-base text-[#191713] leading-snug">
+                  Message us anytime — <span className="font-semibold">we usually reply within a few hours</span>.
+                </p>
               </div>
             </div>
-            <div className="absolute bottom-6 right-6 left-6 md:left-auto bg-white rounded-2xl shadow-lg p-4 max-w-xs flex gap-3 md:ml-auto">
-              <img src={TEAM[0].photo} alt={TEAM[0].name} className="w-9 h-9 rounded-full object-contain bg-[#E5E0D6] flex-shrink-0" />
-              <div>
-                <p style={{ fontFamily: S }} className="text-[11px] font-semibold text-[#6B6457] mb-1">{TEAM[0].name}, founder</p>
-                <p style={{ fontFamily: S }} className="text-[13px] text-[#191713] leading-snug">A named planner replies personally — not a bot. You&apos;ll have my number for the whole trip.</p>
+
+            <div className="absolute -bottom-2 right-4 md:right-10 flex items-end justify-end gap-0">
+              <div className="bg-white rounded-2xl shadow-xl p-5 max-w-sm">
+                <p style={{ fontFamily: S }} className="text-sm font-semibold text-[#004226] mb-1.5">{TEAM[0].name}, founder</p>
+                <p style={{ fontFamily: S }} className="text-base text-[#191713] leading-snug">
+                  A named planner replies personally — not a bot. <span className="font-semibold">You&apos;ll have my number for the whole trip.</span>
+                </p>
               </div>
+              <img src={TEAM[0].photo} alt={TEAM[0].name} className="w-16 h-16 rounded-full object-cover bg-[#E5E0D6] flex-shrink-0 shadow-lg z-10 -ml-4 mb-1" />
             </div>
           </div>
 
           <div className="flex justify-center mt-10">
             <button
-              onClick={openInstagramDM}
+              onClick={() => openWhatsApp()}
               style={{ fontFamily: S }}
               className="bg-[#004226] text-white rounded-full px-6 py-3 text-sm font-bold inline-flex items-center gap-2 hover:bg-[#00331E] transition-colors"
             >
-              <Instagram size={16} /> Message us on Instagram
+              <MessageCircle size={16} /> Message us on WhatsApp
             </button>
           </div>
         </div>
@@ -941,26 +1188,26 @@ function HomePage({ setPage, setSelectedTripId }: { setPage: (p: string) => void
           <h2 style={{ fontFamily: F }} className="text-3xl md:text-4xl font-bold text-white text-center mb-12">
             Real people who really know Vietnam
           </h2>
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-12 max-w-3xl mx-auto">
-            {[...TEAM, { name: "Châu Anh", role: "Co-Founder", photo: chauAnhAvatar }].map((m) => (
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-5 mb-12 max-w-4xl mx-auto">
+            {TEAM.map((m) => (
               <button
                 key={m.name}
                 onClick={() => { setPage("people"); window.scrollTo({ top: 0 }); }}
-                className="relative rounded-2xl overflow-hidden text-left"
-                style={{ aspectRatio: "3/4" }}
+                className="relative rounded-3xl overflow-hidden text-left"
+                style={{ aspectRatio: "4/5" }}
               >
                 <img src={m.photo} alt={m.name} className="absolute inset-0 w-full h-full object-cover" />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/10 to-transparent" />
-                <div className="absolute bottom-0 left-0 right-0 p-3">
-                  <p style={{ fontFamily: F }} className="text-white font-bold text-sm">{m.name}</p>
-                  <p style={{ fontFamily: S }} className="text-white/70 text-[10px]">{m.role}</p>
+                <div className="absolute bottom-0 left-0 right-0 p-5">
+                  <p style={{ fontFamily: F }} className="text-white font-bold text-xl mb-1">{m.name}</p>
+                  <p style={{ fontFamily: S }} className="text-white/70 text-sm">{m.role}</p>
                 </div>
               </button>
             ))}
           </div>
           <div className="flex justify-center">
             <button
-              onClick={openInstagramDM}
+              onClick={() => openWhatsApp()}
               style={{ fontFamily: S }}
               className="bg-white text-[#191713] rounded-full px-6 py-3 text-sm font-bold hover:bg-[#F5F2EC] transition-colors"
             >
@@ -977,7 +1224,7 @@ function HomePage({ setPage, setSelectedTripId }: { setPage: (p: string) => void
             Find your next trip in Vietnam
           </h2>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-5">
-            {TRIPS.map((t) => (
+            {TRIPS.slice(0, 4).map((t) => (
               <button
                 key={t.id}
                 onClick={() => { setSelectedTripId(t.id); setPage("trip"); window.scrollTo({ top: 0 }); }}
@@ -1036,6 +1283,32 @@ function HomePage({ setPage, setSelectedTripId }: { setPage: (p: string) => void
         </div>
       </section>
 
+      {/* AI + human planning announcement */}
+      <section className="px-6 md:px-16 py-10 md:py-12">
+        <div className="max-w-[1440px] mx-auto">
+          <div className="relative overflow-hidden rounded-3xl bg-[#004226] px-6 py-10 md:px-14 md:py-12 flex flex-col md:flex-row items-center gap-6 md:gap-10 text-center md:text-left">
+            <div className="flex-1">
+              <span style={{ fontFamily: S }} className="inline-block text-[11px] uppercase tracking-[0.15em] font-semibold text-[#F5F2EC] bg-white/10 px-3 py-1.5 rounded-full mb-4">
+                Coming this December
+              </span>
+              <h2 style={{ fontFamily: F }} className="text-2xl md:text-[32px] font-bold text-white leading-snug mb-2">
+                AI-human trip planning is on its way
+              </h2>
+              <p style={{ fontFamily: S }} className="text-[15px] text-[rgba(245,242,236,0.75)] max-w-xl">
+                A faster way to start your plan with AI — with every spot still checked in person by a named local before it reaches you.
+              </p>
+            </div>
+            <button
+              onClick={() => openWhatsApp()}
+              style={{ fontFamily: S }}
+              className="bg-white text-[#191713] rounded-full px-6 py-3 text-sm font-bold hover:bg-[#F5F2EC] transition-colors flex-shrink-0"
+            >
+              Get notified
+            </button>
+          </div>
+        </div>
+      </section>
+
       {/* Why $199 */}
       <section id="why-price" className="bg-[#004226] px-6 md:px-16 py-20 md:py-28">
         <div className="max-w-[1440px] mx-auto">
@@ -1060,7 +1333,7 @@ function HomePage({ setPage, setSelectedTripId }: { setPage: (p: string) => void
             </div>
             <div className="bg-white rounded-2xl p-7">
               <p style={{ fontFamily: S }} className="text-[11px] uppercase tracking-wider text-[#004226] font-semibold mb-3">Vietnamese Hangout</p>
-              <p style={{ fontFamily: F }} className="text-2xl font-bold text-[#191713] mb-4">${PLANNING_FEE} planning fee, flat</p>
+              <p style={{ fontFamily: F }} className="text-2xl font-bold text-[#191713] mb-4">{formatPrice(PLANNING_FEE, currency)} planning fee, flat</p>
               <ul className="space-y-2.5">
                 {["The whole cost of a named planner building & vetting your trip", "Hotels, drivers, tours — booked directly, in your own name", "Usually less than what's already hidden in a bundled price"].map((item) => (
                   <li key={item} style={{ fontFamily: S }} className="text-[13px] text-[#191713] flex items-start gap-2.5">
@@ -1073,7 +1346,6 @@ function HomePage({ setPage, setSelectedTripId }: { setPage: (p: string) => void
           </div>
         </div>
       </section>
-
     </div>
   );
 }
@@ -1093,43 +1365,24 @@ function OurPeoplePage() {
       </div>
 
       {/* Vetter strip */}
-      <section className="max-w-[1440px] mx-auto px-6 md:px-16 py-20 md:py-28">
+      <section className="max-w-[1440px] mx-auto px-6 md:px-16 py-14 md:py-16">
         <SectionLabel num="01" label="The team on the ground" />
-        <div className="grid grid-cols-1 md:grid-cols-[minmax(0,340px)_1fr] gap-10 md:gap-16">
-          {/* Lead profile — the founder, given room to breathe rather than boxed like the rest */}
-          {(() => {
-            const lead = TEAM[0];
-            return (
-              <div>
-                <img
-                  src={lead.photo}
-                  alt={lead.name}
-                  className="w-20 h-20 rounded-full object-contain bg-[#E5E0D6] mb-5"
-                />
-                <p style={{ fontFamily: F }} className="text-2xl font-semibold text-[#191713] mb-1">{lead.name}</p>
-                <p style={{ fontFamily: S }} className="text-[12px] text-[#6B6457]">{lead.role} &middot; {lead.region}</p>
-              </div>
-            );
-          })()}
-
-          {/* The rest — a rule-separated list, not a repeated grid of boxes */}
-          <div>
-            {TEAM.slice(1).map((m) => (
-              <div key={m.name} className="flex items-center gap-5 py-6 border-t border-[rgba(25,23,19,0.12)] last:border-b">
-                <img
-                  src={m.photo}
-                  alt={m.name}
-                  className="w-11 h-11 rounded-full object-contain bg-[#E5E0D6] flex-shrink-0"
-                />
-                <div className="flex-1 min-w-0">
-                  <div className="flex flex-wrap items-baseline gap-x-2.5 gap-y-0.5">
-                    <span style={{ fontFamily: F }} className="text-base font-semibold text-[#191713]">{m.name}</span>
-                    <span style={{ fontFamily: S }} className="text-[11px] text-[#6B6457]">{m.role} &middot; {m.region}</span>
-                  </div>
+        <div className="max-w-2xl">
+          {TEAM.map((m) => (
+            <div key={m.name} className="flex items-center gap-5 py-6 border-t border-[rgba(25,23,19,0.12)] last:border-b">
+              <img
+                src={m.photo}
+                alt={m.name}
+                className="w-16 h-16 rounded-full object-cover bg-[#E5E0D6] flex-shrink-0"
+              />
+              <div className="flex-1 min-w-0">
+                <div className="flex flex-wrap items-baseline gap-x-2.5 gap-y-0.5">
+                  <span style={{ fontFamily: F }} className="text-lg font-semibold text-[#191713]">{m.name}</span>
+                  <span style={{ fontFamily: S }} className="text-xs text-[#6B6457]">{m.role}{m.region ? ` · ${m.region}` : ""}</span>
                 </div>
               </div>
-            ))}
-          </div>
+            </div>
+          ))}
         </div>
       </section>
 
@@ -1169,7 +1422,7 @@ function OurPeoplePage() {
                 <p style={{ fontFamily: S }} className="text-xs text-[#6B6457] mt-1">Founder, Vietnamese Hangout</p>
               </div>
               <div className="mt-8">
-                <Btn variant="primary" onClick={openInstagramDM}>
+                <Btn variant="primary" onClick={() => openWhatsApp()}>
                   Start planning <ArrowRight size={14} />
                 </Btn>
               </div>
@@ -1225,7 +1478,7 @@ function OurPeoplePage() {
 
 // ─── Trip detail page ─────────────────────────────────────────────────────────
 
-function TripDetailPage({ tripId, setSelectedTripId }: { tripId: string; setSelectedTripId: (id: string) => void }) {
+function TripDetailPage({ tripId, setSelectedTripId, currency }: { tripId: string; setSelectedTripId: (id: string) => void; currency: "VND" | "USD" }) {
   const trip = TRIPS.find((t) => t.id === tripId) ?? TRIPS[0];
   const [groupSize, setGroupSize] = useState(2);
   const [activeDay, setActiveDay] = useState(0);
@@ -1322,29 +1575,29 @@ function TripDetailPage({ tripId, setSelectedTripId }: { tripId: string; setSele
 
             <div className="flex items-center gap-3 mb-4">
               <label style={{ fontFamily: S }} className="text-xs text-[#6B6457]">Travellers</label>
-              <button onClick={() => setGroupSize(Math.max(1, groupSize - 1))} className="w-7 h-7 rounded-full border border-[rgba(25,23,19,0.2)] flex items-center justify-center text-[#191713] hover:bg-[#F5F2EC]">−</button>
+              <button onClick={() => setGroupSize((g) => Math.max(1, g - 1))} className="w-7 h-7 rounded-full border border-[rgba(25,23,19,0.2)] flex items-center justify-center text-[#191713] hover:bg-[#F5F2EC]">−</button>
               <span style={{ fontFamily: F }} className="text-base font-semibold text-[#191713] w-5 text-center tabular-nums">{groupSize}</span>
-              <button onClick={() => setGroupSize(Math.min(12, groupSize + 1))} className="w-7 h-7 rounded-full border border-[rgba(25,23,19,0.2)] flex items-center justify-center text-[#191713] hover:bg-[#F5F2EC]">+</button>
+              <button onClick={() => setGroupSize((g) => Math.min(12, g + 1))} className="w-7 h-7 rounded-full border border-[rgba(25,23,19,0.2)] flex items-center justify-center text-[#191713] hover:bg-[#F5F2EC]">+</button>
             </div>
 
             <div className="space-y-1 mb-4">
               <div className="flex justify-between items-baseline">
                 <span style={{ fontFamily: S }} className="text-xs text-[#6B6457]">Trip cost ({groupSize} {groupSize === 1 ? "traveller" : "travellers"})</span>
-                <span style={{ fontFamily: F }} className="text-sm font-medium text-[#191713]">${trip.priceFrom * groupSize}</span>
+                <span style={{ fontFamily: F }} className="text-sm font-medium text-[#191713]">{formatPrice(trip.priceFrom * groupSize, currency)}</span>
               </div>
               <div className="flex justify-between items-baseline">
                 <span style={{ fontFamily: S }} className="text-xs text-[#6B6457]">Planning fee</span>
-                <span style={{ fontFamily: F }} className="text-sm font-medium text-[#191713]">${PLANNING_FEE}</span>
+                <span style={{ fontFamily: F }} className="text-sm font-medium text-[#191713]">{formatPrice(PLANNING_FEE, currency)}</span>
               </div>
             </div>
 
             <div className="flex items-center justify-between pt-4 border-t border-[rgba(25,23,19,0.1)]">
               <div>
                 <p style={{ fontFamily: S }} className="text-[10px] uppercase tracking-wider text-[#6B6457]">From</p>
-                <p><span style={{ fontFamily: F }} className="text-2xl font-bold text-[#191713]">${trip.priceFrom}</span> <span style={{ fontFamily: S }} className="text-xs text-[#6B6457]">per person</span></p>
+                <p><span style={{ fontFamily: F }} className="text-2xl font-bold text-[#191713]">{formatPrice(trip.priceFrom, currency)}</span> <span style={{ fontFamily: S }} className="text-xs text-[#6B6457]">per person</span></p>
               </div>
               <button
-                onClick={openInstagramDM}
+                onClick={() => openWhatsApp()}
                 style={{ fontFamily: S }}
                 className="bg-[#004226] text-white rounded-full px-6 py-3 text-[15px] font-bold hover:bg-[#00331E] transition-colors"
               >
@@ -1358,66 +1611,64 @@ function TripDetailPage({ tripId, setSelectedTripId }: { tripId: string; setSele
 
           <div>
             <p style={{ fontFamily: S }} className="text-[10px] uppercase tracking-[0.18em] text-[#6B6457] mb-4">[Description]</p>
-            <p style={{ fontFamily: S }} className="text-[15px] text-[#191713] leading-[1.8]">
+            <p style={{ fontFamily: S }} className="text-[15px] text-[#191713] leading-[1.8] mb-12">
               {trip.description}
             </p>
-          </div>
-        </div>
 
-        {/* Itinerary */}
-        <div className="mb-16">
-          <p style={{ fontFamily: S }} className="text-[10px] uppercase tracking-[0.18em] text-[#6B6457] mb-2">[Travel plans]</p>
-          <h2 style={{ fontFamily: F }} className="text-3xl font-bold text-[#191713] mb-1">Your Travel Itinerary</h2>
-          <p style={{ fontFamily: S }} className="text-sm text-[#6B6457] mb-8">{trip.itinerary.length} days &middot; tap a day to see the plan.</p>
+            {/* Itinerary — sits alongside the quick facts card, in the same column */}
+            <p style={{ fontFamily: S }} className="text-[10px] uppercase tracking-[0.18em] text-[#6B6457] mb-2">[Travel plans]</p>
+            <h2 style={{ fontFamily: F }} className="text-3xl font-bold text-[#191713] mb-1">Your Travel Itinerary</h2>
+            <p style={{ fontFamily: S }} className="text-sm text-[#6B6457] mb-8">{trip.itinerary.length} days &middot; tap a day to see the plan.</p>
 
-          <div className="max-w-2xl">
-            {trip.itinerary.map((item, i) => {
-              const open = i === activeDay;
-              const isLast = i === trip.itinerary.length - 1;
-              return (
-                <div key={item.day} className="flex gap-4">
-                  <div className="flex flex-col items-center flex-shrink-0">
-                    <div
-                      style={{ fontFamily: F }}
-                      className={`w-9 h-9 rounded-full flex items-center justify-center text-xs font-bold transition-colors ${open ? "bg-[#004226] text-white" : "bg-white border border-[rgba(25,23,19,0.15)] text-[#191713]"}`}
-                    >
-                      {item.day}
-                    </div>
-                    {!isLast && <div className="w-px flex-1 bg-[rgba(25,23,19,0.15)] my-1" />}
-                  </div>
-
-                  <div className="flex-1 min-w-0 pb-6">
-                    <button
-                      onClick={() => setActiveDay(open ? -1 : i)}
-                      className={`w-full flex items-center gap-4 text-left rounded-2xl border p-3 transition-colors ${open ? "border-[#004226]/30 bg-white shadow-sm" : "border-[rgba(25,23,19,0.1)] bg-white hover:border-[#004226]/25"}`}
-                    >
-                      <img
-                        src={item.photo}
-                        alt={item.location}
-                        className="w-16 h-16 rounded-xl object-cover flex-shrink-0"
-                      />
-                      <div className="flex-1 min-w-0">
-                        <p style={{ fontFamily: S }} className="text-[11px] text-[#6B6457] flex items-center gap-1 mb-1">
-                          <MapPin size={11} className="flex-shrink-0" /> Day {item.day} &middot; {item.location}
-                        </p>
-                        <p style={{ fontFamily: F }} className="text-[15px] font-semibold text-[#191713] leading-snug truncate">
-                          {item.title}
-                        </p>
+            <div className="max-w-2xl">
+              {trip.itinerary.map((item, i) => {
+                const open = i === activeDay;
+                const isLast = i === trip.itinerary.length - 1;
+                return (
+                  <div key={item.day} className="flex gap-4">
+                    <div className="flex flex-col items-center flex-shrink-0">
+                      <div
+                        style={{ fontFamily: F }}
+                        className={`w-9 h-9 rounded-full flex items-center justify-center text-xs font-bold transition-colors ${open ? "bg-[#004226] text-white" : "bg-white border border-[rgba(25,23,19,0.15)] text-[#191713]"}`}
+                      >
+                        {item.day}
                       </div>
-                      {open
-                        ? <ChevronUp size={16} className="flex-shrink-0 text-[#6B6457]" />
-                        : <ChevronDown size={16} className="flex-shrink-0 text-[#6B6457]" />}
-                    </button>
+                      {!isLast && <div className="w-px flex-1 bg-[rgba(25,23,19,0.15)] my-1" />}
+                    </div>
 
-                    {open && (
-                      <p style={{ fontFamily: S }} className="text-[14px] text-[#6B6457] leading-relaxed mt-4 px-1">
-                        {item.note}
-                      </p>
-                    )}
+                    <div className="flex-1 min-w-0 pb-6">
+                      <button
+                        onClick={() => setActiveDay(open ? -1 : i)}
+                        className={`w-full flex items-center gap-4 text-left rounded-2xl border p-3 transition-colors ${open ? "border-[#004226]/30 bg-white shadow-sm" : "border-[rgba(25,23,19,0.1)] bg-white hover:border-[#004226]/25"}`}
+                      >
+                        <img
+                          src={item.photo}
+                          alt={item.location}
+                          className="w-16 h-16 rounded-xl object-cover flex-shrink-0"
+                        />
+                        <div className="flex-1 min-w-0">
+                          <p style={{ fontFamily: S }} className="text-[11px] text-[#6B6457] flex items-center gap-1 mb-1">
+                            <MapPin size={11} className="flex-shrink-0" /> Day {item.day} &middot; {item.location}
+                          </p>
+                          <p style={{ fontFamily: F }} className="text-[15px] font-semibold text-[#191713] leading-snug truncate">
+                            {item.title}
+                          </p>
+                        </div>
+                        {open
+                          ? <ChevronUp size={16} className="flex-shrink-0 text-[#6B6457]" />
+                          : <ChevronDown size={16} className="flex-shrink-0 text-[#6B6457]" />}
+                      </button>
+
+                      {open && (
+                        <p style={{ fontFamily: S }} className="text-[14px] text-[#6B6457] leading-relaxed mt-4 px-1">
+                          {item.note}
+                        </p>
+                      )}
+                    </div>
                   </div>
-                </div>
-              );
-            })}
+                );
+              })}
+            </div>
           </div>
         </div>
 
@@ -1486,7 +1737,7 @@ function TripDetailPage({ tripId, setSelectedTripId }: { tripId: string; setSele
               We build every itinerary around what you actually want — then a named local checks it before you pay.
             </p>
             <button
-              onClick={openInstagramDM}
+              onClick={() => openWhatsApp()}
               style={{ fontFamily: S }}
               className="bg-white text-[#191713] rounded-full px-6 py-3 text-[15px] font-bold hover:bg-[#F5F2EC] transition-colors inline-flex items-center gap-2"
             >
@@ -1617,6 +1868,8 @@ function VettingPage() {
 export default function App() {
   const [page, setPage] = useState("home");
   const [selectedTripId, setSelectedTripId] = useState(TRIPS[0].id);
+  const [language, setLanguage] = useState(LANGUAGES[0]);
+  const [currency, setCurrency] = useState<"VND" | "USD">("USD");
 
   useEffect(() => {
     window.scrollTo({ top: 0 });
@@ -1625,11 +1878,11 @@ export default function App() {
   return (
     <div className="bg-[#F5F2EC] min-h-screen">
       <Toaster position="top-center" richColors />
-      <Nav setPage={setPage} />
+      <Nav setPage={setPage} language={language} setLanguage={setLanguage} currency={currency} setCurrency={setCurrency} />
 
       <main>
-        {page === "home" && <HomePage setPage={setPage} setSelectedTripId={setSelectedTripId} />}
-        {page === "trip" && <TripDetailPage tripId={selectedTripId} setSelectedTripId={setSelectedTripId} />}
+        {page === "home" && <HomePage setPage={setPage} setSelectedTripId={setSelectedTripId} language={language} currency={currency} />}
+        {page === "trip" && <TripDetailPage tripId={selectedTripId} setSelectedTripId={setSelectedTripId} currency={currency} />}
         {page === "vetting" && <VettingPage />}
         {page === "people" && <OurPeoplePage />}
       </main>

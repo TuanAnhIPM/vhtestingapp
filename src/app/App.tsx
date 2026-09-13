@@ -355,7 +355,7 @@ const TRIPS = [
     duration: "3 days",
     region: "Central Highlands",
     priceFrom: 250,
-    vetter: TEAM[2],
+    vetter: TEAM[3],
     vettedDate: "March 2026",
     photo: "https://images.unsplash.com/photo-1609412058473-c199497c3c5d?w=900&h=620&fit=crop&auto=format",
     tagline: "A relaxed pace built for a couple who don't want to rush — coffee farms, a lake, pine forest.",
@@ -408,7 +408,7 @@ const TRIPS = [
     region: "Saigon, Đà Lạt, Đà Nẵng, Hội An & Huế",
     priceFrom: 565,
     vetter: TEAM[0],
-    vettedDate: "December 2024",
+    vettedDate: "December 2025",
     photo: "https://images.unsplash.com/photo-1611854064186-d8dccbccb031?w=900&h=620&fit=crop&auto=format",
     tagline: "Christmas Eve on My Khe Beach, the Hải Vân Pass by scenic train, four cities in ten days.",
     madeFor: "Melody and her family",
@@ -456,7 +456,14 @@ const TRIPS = [
   },
 ];
 
-const PLANNING_FEE = 199;
+// Short trips need far less coordination than longer, multi-city ones, so the planning fee scales with trip length.
+const PLANNING_FEE_SHORT = 99;
+const PLANNING_FEE_LONG = 199;
+const SHORT_TRIP_MAX_DAYS = 4;
+const getPlanningFee = (duration: string): number => {
+  const days = parseInt(duration, 10);
+  return !isNaN(days) && days <= SHORT_TRIP_MAX_DAYS ? PLANNING_FEE_SHORT : PLANNING_FEE_LONG;
+};
 // Approximate USD → VND rate — update periodically, not a live feed.
 const USD_TO_VND = 25000;
 const formatPrice = (usd: number, currency: "USD" | "VND") => {
@@ -804,7 +811,13 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
   agencyBullet1: { EN: "Planning, vetting and margin folded together", ES: "Planificación, verificación y margen combinados", ZH: "规划、审核和利润混在一起", KO: "기획, 검증, 마진이 한데 뒤섞여 있음" },
   agencyBullet2: { EN: "You can't see what's a fee vs. a kickback", ES: "No puedes ver qué es una tarifa y qué es una comisión", ZH: "你分不清哪些是服务费，哪些是回扣", KO: "수수료인지 리베이트인지 알 수 없음" },
   agencyBullet3: { EN: "No named person accountable for the plan", ES: "Ninguna persona con nombre responsable del plan", ZH: "没有实名负责人对行程负责", KO: "일정에 책임지는 실명 담당자가 없음" },
-  planningFeeFlat: { EN: "planning fee, flat", ES: "tarifa de planificación, fija", ZH: "规划服务费（固定）", KO: "고정 기획 수수료" },
+  planningFeeByLength: { EN: "planning fee, by trip length", ES: "tarifa de planificación, según duración", ZH: "规划服务费（按行程长短）", KO: "여행 기간별 기획 수수료" },
+  feeTierNote: {
+    EN: "Short trips of 4 days or fewer are $99. Longer, multi-city itineraries are $199 — more flights, hotels and logistics to coordinate and check in person.",
+    ES: "Los viajes cortos de 4 días o menos cuestan $99. Los itinerarios más largos y de varias ciudades cuestan $199 — hay más vuelos, hoteles y logística que coordinar y verificar en persona.",
+    ZH: "4天及以下的短途行程收费$99；涉及多个城市、天数更长的行程收费$199——需要协调和实地核实的航班、酒店与后勤事项更多。",
+    KO: "4일 이하의 짧은 여행은 $99입니다. 여러 도시를 아우르는 더 긴 일정은 $199입니다 — 조율하고 직접 확인해야 할 항공편, 호텔, 물류가 더 많기 때문입니다.",
+  },
   vhBullet1: { EN: "The whole cost of a named planner building & vetting your trip", ES: "El costo completo de un planificador con nombre creando y verificando tu viaje", ZH: "涵盖实名策划人为您打造并审核行程的全部费用", KO: "실명 플래너가 여행을 설계하고 검증하는 데 드는 전체 비용" },
   vhBullet2: { EN: "Hotels, drivers, tours — booked directly, in your own name", ES: "Hoteles, conductores, tours — reservados directamente, a tu propio nombre", ZH: "酒店、司机、行程——均以您本人名义直接预订", KO: "호텔, 기사, 투어 — 고객님 명의로 직접 예약" },
   vhBullet3: { EN: "Usually less than what's already hidden in a bundled price", ES: "Generalmente menos de lo que ya está oculto en un precio combinado", ZH: "通常比打包价里隐藏的费用还要低", KO: "보통 묶음 가격 안에 숨겨진 비용보다 저렴함" },
@@ -1615,7 +1628,7 @@ function HomePage({ setPage, setSelectedTripId, language, currency }: { setPage:
             </div>
             <div className="bg-white rounded-2xl p-7">
               <p style={{ fontFamily: S }} className="text-[11px] uppercase tracking-wider text-[#004226] font-semibold mb-3">{t("vhBrandName", language)}</p>
-              <p style={{ fontFamily: F }} className="text-2xl font-bold text-[#191713] mb-4">{formatPrice(PLANNING_FEE, currency)} {t("planningFeeFlat", language)}</p>
+              <p style={{ fontFamily: F }} className="text-2xl font-bold text-[#191713] mb-4">{formatPrice(PLANNING_FEE_SHORT, currency)}–{formatPrice(PLANNING_FEE_LONG, currency)} {t("planningFeeByLength", language)}</p>
               <ul className="space-y-2.5">
                 {[t("vhBullet1", language), t("vhBullet2", language), t("vhBullet3", language)].map((item) => (
                   <li key={item} style={{ fontFamily: S }} className="text-[13px] text-[#191713] flex items-start gap-2.5">
@@ -1626,6 +1639,9 @@ function HomePage({ setPage, setSelectedTripId, language, currency }: { setPage:
               </ul>
             </div>
           </div>
+          <p style={{ fontFamily: S }} className="text-[13px] text-[rgba(245,242,236,0.6)] text-center max-w-xl mx-auto mt-8">
+            {t("feeTierNote", language)}
+          </p>
         </div>
       </section>
     </div>
@@ -1881,7 +1897,7 @@ function TripDetailPage({ tripId, setSelectedTripId, currency, language }: { tri
               </div>
               <div className="flex justify-between items-baseline">
                 <span style={{ fontFamily: S }} className="text-xs text-[#6B6457]">{t("tdPlanningFee", language)}</span>
-                <span style={{ fontFamily: F }} className="text-sm font-medium text-[#191713]">{formatPrice(PLANNING_FEE, currency)}</span>
+                <span style={{ fontFamily: F }} className="text-sm font-medium text-[#191713]">{formatPrice(getPlanningFee(trip.duration), currency)}</span>
               </div>
             </div>
 

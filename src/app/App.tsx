@@ -857,6 +857,12 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
   },
   tdGetStarted: { EN: "Get Started", ES: "Comenzar", ZH: "立即开始", KO: "시작하기" },
 
+  region_mekong_condao: { EN: "Mekong Delta & Côn Đảo", ES: "Delta del Mekong y Côn Đảo", ZH: "湄公河三角洲与昆岛", KO: "메콩 델타 & 꼰다오" },
+  region_dalat_nature: { EN: "Central Highlands", ES: "Tierras Altas Centrales", ZH: "中部高原", KO: "중부 고원" },
+  region_food_journey: { EN: "Saigon, Mekong Delta, Hội An & Đà Nẵng", ES: "Saigón, Delta del Mekong, Hội An y Đà Nẵng", ZH: "西贡、湄公河三角洲、会安与岘港", KO: "사이공, 메콩 델타, 호이안 & 다낭" },
+  region_grand_tour: { EN: "Saigon, Đà Lạt, Đà Nẵng, Hội An & Huế", ES: "Saigón, Đà Lạt, Đà Nẵng, Hội An y Huế", ZH: "西贡、大叻、岘港、会安与顺化", KO: "사이공, 달랏, 다낭, 호이안 & 후에" },
+  region_north_vietnam_hagiang: { EN: "Hanoi, Ninh Bình & Hà Giang", ES: "Hanói, Ninh Bình y Hà Giang", ZH: "河内、宁平与河江", KO: "하노이, 닌빈 & 하장" },
+
   tagline_mekong_condao: { EN: "Floating markets before sunrise, then a night on a national park beach watching sea turtles nest.", ES: "Mercados flotantes antes del amanecer, luego una noche en una playa de parque nacional viendo anidar a las tortugas marinas.", ZH: "日出前的水上市场，夜晚在国家公园海滩观赏海龟产卵。", KO: "해 뜨기 전 수상시장을 둘러보고, 국립공원 해변에서 바다거북 산란을 지켜보는 밤을 보냅니다." },
   desc_mekong_condao: {
     EN: "This is a real itinerary we planned and ran — five days built around two things that don't wait for anyone: the floating market at Cái Răng, busiest in the first hour of light, and the sea turtles nesting on Hòn Bảy Cạnh, which come ashore on the tide's schedule, not ours. Everything in between — the homestay on Cồn Sơn, the flight out to Côn Đảo — is built around getting you to those two moments at the right time.",
@@ -914,6 +920,18 @@ const formatDayLabel = (day: number, language: { code: string }): string => {
     case "ZH": return `第${day}天`;
     case "KO": return `${day}일차`;
     default: return `Day ${day}`;
+  }
+};
+
+// Reformats a trip's "N days" duration string into the active language, e.g. "5 days" -> "5 días" / "5天" / "5일".
+const formatDuration = (duration: string, language: { code: string }): string => {
+  const n = parseInt(duration, 10);
+  if (isNaN(n)) return duration;
+  switch (language.code) {
+    case "ES": return `${n} días`;
+    case "ZH": return `${n}天`;
+    case "KO": return `${n}일`;
+    default: return `${n} days`;
   }
 };
 
@@ -1374,7 +1392,7 @@ function HomePage({ setPage, setSelectedTripId, language, currency }: { setPage:
                       <img src={trip.photo} alt={trip.name} className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" />
                       <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent" />
                       <span style={{ fontFamily: S }} className="absolute top-4 right-4 bg-white/90 text-[#191713] text-[11px] font-semibold px-3 py-1 rounded-full">
-                        {trip.duration}
+                        {formatDuration(trip.duration, language)}
                       </span>
                       <div className="absolute bottom-0 left-0 right-0 p-5">
                         <p style={{ fontFamily: F }} className="text-white font-bold text-lg leading-snug mb-1">{trip.name}</p>
@@ -1536,10 +1554,10 @@ function HomePage({ setPage, setSelectedTripId, language, currency }: { setPage:
                 className="text-left group"
               >
                 <div className="rounded-2xl overflow-hidden mb-3" style={{ aspectRatio: "4/3" }}>
-                  <img src={trip.photo} alt={trip.region} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" />
+                  <img src={trip.photo} alt={t(`region_${trip.id.replace(/-/g, "_")}`, language)} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" />
                 </div>
-                <p style={{ fontFamily: F }} className="font-bold text-[#191713] mb-0.5">{trip.region}</p>
-                <p style={{ fontFamily: S }} className="text-xs text-[#6B6457]">{trip.tagline}</p>
+                <p style={{ fontFamily: F }} className="font-bold text-[#191713] mb-0.5">{t(`region_${trip.id.replace(/-/g, "_")}`, language)}</p>
+                <p style={{ fontFamily: S }} className="text-xs text-[#6B6457]">{t(`tagline_${trip.id.replace(/-/g, "_")}`, language)}</p>
               </button>
             ))}
           </div>
@@ -1804,7 +1822,7 @@ function TripDetailPage({ tripId, setSelectedTripId, currency, language }: { tri
               {trip.name}
             </h1>
             <div className="flex flex-wrap items-center gap-4">
-              <span style={{ fontFamily: S }} className="text-sm text-[#6B6457] flex items-center gap-1.5"><MapPin size={14} />{trip.region}</span>
+              <span style={{ fontFamily: S }} className="text-sm text-[#6B6457] flex items-center gap-1.5"><MapPin size={14} />{t(`region_${tripKey}`, language)}</span>
               <button onClick={openInstagramProfile} style={{ fontFamily: S }} className="text-sm text-[#6B6457] flex items-center gap-1.5 hover:text-[#004226] transition-colors underline underline-offset-2">
                 <Instagram size={14} />{t("tdReviews", language)}
               </button>
@@ -1874,8 +1892,8 @@ function TripDetailPage({ tripId, setSelectedTripId, currency, language }: { tri
             </h2>
             <div className="flex flex-wrap gap-x-5 gap-y-2 py-4 my-1 border-y border-[rgba(25,23,19,0.1)]">
               <VetterChip vetter={trip.vetter} small />
-              <span style={{ fontFamily: S }} className="text-xs text-[#6B6457] flex items-center gap-1.5"><Clock size={13} />{trip.duration}</span>
-              <span style={{ fontFamily: S }} className="text-xs text-[#6B6457] flex items-center gap-1.5"><MapPin size={13} />{trip.region}</span>
+              <span style={{ fontFamily: S }} className="text-xs text-[#6B6457] flex items-center gap-1.5"><Clock size={13} />{formatDuration(trip.duration, language)}</span>
+              <span style={{ fontFamily: S }} className="text-xs text-[#6B6457] flex items-center gap-1.5"><MapPin size={13} />{t(`region_${tripKey}`, language)}</span>
             </div>
 
             <div className="flex items-center gap-3 mb-4">
@@ -2010,7 +2028,7 @@ function TripDetailPage({ tripId, setSelectedTripId, currency, language }: { tri
                   <img src={trip.photo} alt={trip.name} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-[1.03]" />
                 </div>
                 <p style={{ fontFamily: F }} className="text-base font-semibold text-[#191713] mb-1">{trip.name}</p>
-                <p style={{ fontFamily: S }} className="text-xs text-[#6B6457]">{trip.region} &middot; {trip.duration}</p>
+                <p style={{ fontFamily: S }} className="text-xs text-[#6B6457]">{t(`region_${trip.id.replace(/-/g, "_")}`, language)} &middot; {formatDuration(trip.duration, language)}</p>
               </button>
             ))}
           </div>

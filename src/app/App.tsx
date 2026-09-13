@@ -347,6 +347,10 @@ const TRIPS = [
       { label: { EN: "One cooking class", ES: "Una clase de cocina", ZH: "一堂烹饪课", KO: "요리 수업 1회" }, detail: { EN: "Chả giò, bánh xèo and bún thịt xào on Cồn Sơn — what you cook is your lunch.", ES: "Chả giò, bánh xèo y bún thịt xào en Cồn Sơn — lo que cocines será tu almuerzo.", ZH: "在Cồn Sơn学习制作炸春卷、越式煎饼与炒肉米线——您亲手做的菜就是您的午餐。", KO: "Cồn Sơn에서 짜조, 반쎄오, 분팃싸오를 직접 만들며 — 완성한 요리가 곧 점심이 됩니다." } },
     ],
     notIncluded: { EN: "Not included: the Grab from Ho Chi Minh City to Mùa Xuân, international flights, travel insurance outside the turtle night, meals unless noted, visa fees, and tips.", ES: "No incluido: el Grab desde Ciudad Ho Chi Minh hasta Mùa Xuân, vuelos internacionales, seguro de viaje fuera de la noche de las tortugas, comidas salvo que se indique, tasas de visa y propinas.", ZH: "不包含：从胡志明市到穆春的Grab打车费用、国际机票、护龟之夜以外的旅行保险、未特别注明的餐食、签证费及小费。", KO: "포함되지 않는 사항: 호치민시에서 무아쑤언까지의 그랩(Grab) 차량비, 국제선 항공권, 바다거북의 밤 이외의 여행자 보험, 별도 표기가 없는 식사, 비자 비용 및 팁." },
+    climate: [
+      { location: { EN: "Cần Thơ", ES: "Cần Thơ", ZH: "Cần Thơ", KO: "Cần Thơ" }, month: 8, highC: 31, lowC: 24, note: { EN: "Rainy season, hot and humid", ES: "Temporada de lluvias, calor y humedad", ZH: "雨季，炎热潮湿", KO: "우기, 덥고 습함" } },
+      { location: { EN: "Côn Đảo", ES: "Côn Đảo", ZH: "Côn Đảo", KO: "Côn Đảo" }, month: 8, highC: 30, lowC: 25, note: { EN: "Rainy season, humid, daily showers", ES: "Temporada de lluvias, húmedo, chubascos diarios", ZH: "雨季，潮湿，每日阵雨", KO: "우기, 습하고 매일 소나기" } },
+    ],
   },
   {
     id: "dalat-nature",
@@ -373,6 +377,9 @@ const TRIPS = [
       { label: { EN: "Local planner support", ES: "Soporte de un planificador local", ZH: "本地策划人支持", KO: "현지 플래너 지원" }, detail: { EN: "Di Thạch reachable by WhatsApp for the full trip.", ES: "Di Thạch disponible por WhatsApp durante todo el viaje.", ZH: "全程可通过WhatsApp联系Di Thạch。", KO: "여행 전체 기간 동안 WhatsApp으로 Di Thạch와 연락 가능합니다." } },
     ],
     notIncluded: { EN: "Not included: the sleeper bus to and from Đà Lạt, international flights, meals unless noted, visa fees, and tips.", ES: "No incluido: el bus nocturno de ida y vuelta a Đà Lạt, vuelos internacionales, comidas salvo que se indique, tasas de visa y propinas.", ZH: "不包含：往返大叻的夜间大巴、国际机票、未特别注明的餐食、签证费及小费。", KO: "포함되지 않는 사항: 달랏 왕복 슬리핑 버스, 국제선 항공권, 별도 표기가 없는 식사, 비자 비용 및 팁." },
+    climate: [
+      { location: { EN: "Đà Lạt", ES: "Đà Lạt", ZH: "Đà Lạt", KO: "Đà Lạt" }, month: 3, highC: 27, lowC: 16, note: { EN: "Dry season, sunny and mild", ES: "Temporada seca, soleado y templado", ZH: "旱季，阳光明媚，气候温和", KO: "건기, 화창하고 온화함" } },
+    ],
   },
   {
     id: "food-journey",
@@ -399,6 +406,11 @@ const TRIPS = [
       { label: { EN: "Local planner support", ES: "Soporte de un planificador local", ZH: "本地策划人支持", KO: "현지 플래너 지원" }, detail: { EN: "Tuấn Anh reachable by WhatsApp for the full trip.", ES: "Tuấn Anh disponible por WhatsApp durante todo el viaje.", ZH: "全程可通过WhatsApp联系Tuấn Anh。", KO: "여행 전체 기간 동안 WhatsApp으로 Tuấn Anh와 연락 가능합니다." } },
     ],
     notIncluded: { EN: "Not included: international flights, meals unless noted, visa fees, and tips.", ES: "No incluido: vuelos internacionales, comidas salvo que se indique, tasas de visa y propinas.", ZH: "不包含：国际机票、未特别注明的餐食、签证费及小费。", KO: "포함되지 않는 사항: 국제선 항공권, 별도 표기가 없는 식사, 비자 비용 및 팁." },
+    climate: [
+      { location: { EN: "Ho Chi Minh City", ES: "Ciudad Ho Chi Minh", ZH: "胡志明市", KO: "호치민시" }, month: 4, highC: 34, lowC: 26, note: { EN: "Hottest month, dry, intense heat", ES: "El mes más caluroso, seco, calor intenso", ZH: "全年最热的月份，干燥，酷热难耐", KO: "가장 더운 달, 건조하고 강한 더위" } },
+      { location: { EN: "Hội An", ES: "Hội An", ZH: "Hội An", KO: "Hội An" }, month: 4, highC: 30, lowC: 24, note: { EN: "Driest month, warm and breezy", ES: "El mes más seco, cálido y con brisa", ZH: "全年最干燥的月份，温暖有微风", KO: "가장 건조한 달, 따뜻하고 산들바람이 붊" } },
+      { location: { EN: "Đà Nẵng", ES: "Đà Nẵng", ZH: "Đà Nẵng", KO: "Đà Nẵng" }, month: 4, highC: 30, lowC: 24, note: { EN: "Dry season, sunny, best month to visit", ES: "Temporada seca, soleado, el mejor mes para visitar", ZH: "旱季，阳光充足，全年最佳旅游月份", KO: "건기, 화창함, 방문하기 가장 좋은 달" } },
+    ],
   },
   {
     id: "grand-tour",
@@ -425,6 +437,12 @@ const TRIPS = [
       { label: { EN: "Local planner support", ES: "Soporte de un planificador local", ZH: "本地策划人支持", KO: "현지 플래너 지원" }, detail: { EN: "Tuấn Anh reachable by WhatsApp for the full trip.", ES: "Tuấn Anh disponible por WhatsApp durante todo el viaje.", ZH: "全程可通过WhatsApp联系Tuấn Anh。", KO: "여행 전체 기간 동안 WhatsApp으로 Tuấn Anh와 연락 가능합니다." } },
     ],
     notIncluded: { EN: "Not included: international flights, meals unless noted, visa fees, and tips.", ES: "No incluido: vuelos internacionales, comidas salvo que se indique, tasas de visa y propinas.", ZH: "不包含：国际机票、未特别注明的餐食、签证费及小费。", KO: "포함되지 않는 사항: 국제선 항공권, 별도 표기가 없는 식사, 비자 비용 및 팁." },
+    climate: [
+      { location: { EN: "Ho Chi Minh City", ES: "Ciudad Ho Chi Minh", ZH: "胡志明市", KO: "호치민시" }, month: 12, highC: 30, lowC: 22, note: { EN: "Dry season, sunny, pleasantly cooler", ES: "Temporada seca, soleado, agradablemente más fresco", ZH: "旱季，阳光充足，凉爽宜人", KO: "건기, 화창하고 선선함" } },
+      { location: { EN: "Đà Lạt", ES: "Đà Lạt", ZH: "Đà Lạt", KO: "Đà Lạt" }, month: 12, highC: 23, lowC: 15, note: { EN: "Dry season, cool and crisp", ES: "Temporada seca, fresco y agradable", ZH: "旱季，凉爽清新", KO: "건기, 시원하고 상쾌함" } },
+      { location: { EN: "Đà Nẵng", ES: "Đà Nẵng", ZH: "Đà Nẵng", KO: "Đà Nẵng" }, month: 12, highC: 25, lowC: 21, note: { EN: "End of rainy season, cool and wet", ES: "Final de la temporada de lluvias, fresco y húmedo", ZH: "雨季尾声，凉爽多雨", KO: "우기 막바지, 선선하고 비가 잦음" } },
+      { location: { EN: "Huế", ES: "Huế", ZH: "Huế", KO: "Huế" }, month: 12, highC: 24, lowC: 20, note: { EN: "Rainy season, cool, prone to flooding", ES: "Temporada de lluvias, fresco, propenso a inundaciones", ZH: "雨季，凉爽，易发生洪涝", KO: "우기, 선선하며 홍수 발생 가능" } },
+    ],
   },
   {
     id: "north-vietnam-hagiang",
@@ -453,6 +471,11 @@ const TRIPS = [
       { label: { EN: "Boat trips & entrance fees", ES: "Paseos en barco y entradas", ZH: "船票与门票费用", KO: "보트 투어 및 입장료" }, detail: { EN: "Tràng An, Vân Long and the Nho Quế river, plus welcome and farewell dinners.", ES: "Tràng An, Vân Long y el río Nho Quế, además de las cenas de bienvenida y despedida.", ZH: "长安、云隆及奶河的船票与门票，另含欢迎晚宴与告别晚宴。", KO: "짱안, 반롱, 뇨꾸에 강 관련 비용, 그리고 환영 만찬과 송별 만찬이 포함됩니다." } },
     ],
     notIncluded: { EN: "Not included: international and domestic flights, travel insurance, most meals and drinks, personal expenses and tips, and visa fees.", ES: "No incluido: vuelos internacionales y domésticos, seguro de viaje, la mayoría de las comidas y bebidas, gastos personales y propinas, y tasas de visa.", ZH: "不包含：国际及国内机票、旅行保险、大部分餐饮费用、个人消费与小费，以及签证费。", KO: "포함되지 않는 사항: 국제선 및 국내선 항공권, 여행자 보험, 대부분의 식사 및 음료, 개인 경비 및 팁, 그리고 비자 비용." },
+    climate: [
+      { location: { EN: "Hanoi", ES: "Hanói", ZH: "河内", KO: "하노이" }, month: 9, highC: 31, lowC: 23, note: { EN: "Transition month, warm, occasional storms", ES: "Mes de transición, cálido, tormentas ocasionales", ZH: "季节交替月，温暖，偶有风暴", KO: "환절기, 따뜻하고 간헐적 폭풍우" } },
+      { location: { EN: "Ninh Bình", ES: "Ninh Bình", ZH: "Ninh Bình", KO: "Ninh Bình" }, month: 9, highC: 32, lowC: 25, note: { EN: "Warm, humid, rainy season", ES: "Cálido, húmedo, temporada de lluvias", ZH: "温暖潮湿，雨季", KO: "따뜻하고 습한 우기" } },
+      { location: { EN: "Hà Giang", ES: "Hà Giang", ZH: "Hà Giang", KO: "Hà Giang" }, month: 9, highC: 30, lowC: 22, note: { EN: "Rains easing, warm days, misty mountains higher up", ES: "Las lluvias disminuyen, días cálidos, montañas con neblina en altura", ZH: "降雨渐少，白天温暖，高处山区多雾", KO: "비가 잦아드는 시기, 낮은 따뜻하고 고지대 산악은 안개가 자주 낌" } },
+    ],
   },
 ];
 
@@ -874,6 +897,15 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
   region_grand_tour: { EN: "Saigon, Đà Lạt, Đà Nẵng, Hội An & Huế", ES: "Saigón, Đà Lạt, Đà Nẵng, Hội An y Huế", ZH: "西贡、大叻、岘港、会安与顺化", KO: "사이공, 달랏, 다낭, 호이안 & 후에" },
   region_north_vietnam_hagiang: { EN: "Hanoi, Ninh Bình & Hà Giang", ES: "Hanói, Ninh Bình y Hà Giang", ZH: "河内、宁平与河江", KO: "하노이, 닌빈 & 하장" },
 
+  tdWeatherLabel: { EN: "[Weather]", ES: "[Clima]", ZH: "[天气]", KO: "[날씨]" },
+  tdWeatherHeading: { EN: "What to Expect, Weather-Wise", ES: "Qué Esperar del Clima", ZH: "天气状况预览", KO: "날씨는 이렇습니다" },
+  tdWeatherSub: {
+    EN: "Typical daytime highs and overnight lows for this trip's destinations, based on when it's usually run.",
+    ES: "Máximas diurnas y mínimas nocturnas típicas para los destinos de este viaje, según la época en que suele realizarse.",
+    ZH: "根据本行程通常安排的时间，列出各目的地典型的白天最高温与夜间最低温。",
+    KO: "이 여행이 보통 진행되는 시기를 기준으로, 목적지별 낮 최고 기온과 밤 최저 기온을 안내합니다.",
+  },
+
   tagline_mekong_condao: { EN: "Floating markets before sunrise, then a night on a national park beach watching sea turtles nest.", ES: "Mercados flotantes antes del amanecer, luego una noche en una playa de parque nacional viendo anidar a las tortugas marinas.", ZH: "日出前的水上市场，夜晚在国家公园海滩观赏海龟产卵。", KO: "해 뜨기 전 수상시장을 둘러보고, 국립공원 해변에서 바다거북 산란을 지켜보는 밤을 보냅니다." },
   desc_mekong_condao: {
     EN: "This is a real itinerary we planned and ran — five days built around two things that don't wait for anyone: the floating market at Cái Răng, busiest in the first hour of light, and the sea turtles nesting on Hòn Bảy Cạnh, which come ashore on the tide's schedule, not ours. Everything in between — the homestay on Cồn Sơn, the flight out to Côn Đảo — is built around getting you to those two moments at the right time.",
@@ -946,22 +978,38 @@ const formatDuration = (duration: string, language: { code: string }): string =>
   }
 };
 
+const MONTH_NAMES: Record<string, string[]> = {
+  EN: ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],
+  ES: ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"],
+  ZH: ["1月", "2月", "3月", "4月", "5月", "6月", "7月", "8月", "9月", "10月", "11月", "12月"],
+  KO: ["1월", "2월", "3월", "4월", "5월", "6월", "7월", "8월", "9월", "10월", "11월", "12월"],
+};
+const formatMonth = (monthIndex: number, language: { code: string }): string =>
+  (MONTH_NAMES[language.code] || MONTH_NAMES.EN)[monthIndex - 1] || "";
+
+// Converts a base Celsius reading to the viewer's chosen display unit.
+const formatTemp = (celsius: number, unit: "C" | "F"): string =>
+  unit === "F" ? `${Math.round((celsius * 9) / 5 + 32)}°F` : `${celsius}°C`;
+
 function Nav({
   setPage,
   language,
   setLanguage,
   currency,
   setCurrency,
+  tempUnit,
+  setTempUnit,
 }: {
   setPage: (p: string) => void;
   language: typeof LANGUAGES[0];
   setLanguage: (l: typeof LANGUAGES[0]) => void;
   currency: "VND" | "USD";
   setCurrency: (c: "VND" | "USD") => void;
+  tempUnit: "C" | "F";
+  setTempUnit: (u: "C" | "F") => void;
 }) {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [openMenu, setOpenMenu] = useState<"currency" | "language" | "temp" | null>(null);
-  const [tempUnit, setTempUnit] = useState<"C" | "F">("C");
   const [scrolled, setScrolled] = useState(false);
 
   useEffect(() => {
@@ -1041,7 +1089,7 @@ function Nav({
             </div>
 
             {/* Temperature */}
-            <button onClick={() => setTempUnit((u) => (u === "C" ? "F" : "C"))} className={pillClass}>
+            <button onClick={() => setTempUnit(tempUnit === "C" ? "F" : "C")} className={pillClass}>
               °{tempUnit}
             </button>
 
@@ -1095,7 +1143,7 @@ function Nav({
               <div>
                 <p className="text-[10px] uppercase tracking-wider text-[#6B6457] mb-2">{t("navTempLabel", language)}</p>
                 <button
-                  onClick={() => setTempUnit((u) => (u === "C" ? "F" : "C"))}
+                  onClick={() => setTempUnit(tempUnit === "C" ? "F" : "C")}
                   className="text-[13px] px-3 py-1.5 rounded-full border border-[rgba(25,23,19,0.15)] text-[#191713]"
                 >
                   °{tempUnit}
@@ -1779,7 +1827,7 @@ function OurPeoplePage() {
 
 // ─── Trip detail page ─────────────────────────────────────────────────────────
 
-function TripDetailPage({ tripId, setSelectedTripId, currency, language }: { tripId: string; setSelectedTripId: (id: string) => void; currency: "VND" | "USD"; language: typeof LANGUAGES[0] }) {
+function TripDetailPage({ tripId, setSelectedTripId, currency, language, tempUnit }: { tripId: string; setSelectedTripId: (id: string) => void; currency: "VND" | "USD"; language: typeof LANGUAGES[0]; tempUnit: "C" | "F" }) {
   const trip = TRIPS.find((t) => t.id === tripId) ?? TRIPS[0];
   const [groupSize, setGroupSize] = useState(2);
   const [activeDay, setActiveDay] = useState(0);
@@ -2004,6 +2052,27 @@ function TripDetailPage({ tripId, setSelectedTripId, currency, language }: { tri
           />
         </div>
 
+        {/* Weather */}
+        <div className="mb-16">
+          <p style={{ fontFamily: S }} className="text-[10px] uppercase tracking-[0.18em] text-[#6B6457] mb-2">{t("tdWeatherLabel", language)}</p>
+          <h2 style={{ fontFamily: F }} className="text-3xl font-bold text-[#191713] mb-1">{t("tdWeatherHeading", language)}</h2>
+          <p style={{ fontFamily: S }} className="text-sm text-[#6B6457] mb-8">{t("tdWeatherSub", language)}</p>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+            {trip.climate.map((c) => (
+              <div key={tr(c.location, language)} className="rounded-2xl border border-[rgba(25,23,19,0.1)] bg-white p-5">
+                <div className="flex items-center justify-between mb-3">
+                  <p style={{ fontFamily: F }} className="text-base font-semibold text-[#191713]">{tr(c.location, language)}</p>
+                  <span style={{ fontFamily: S }} className="text-xs text-[#6B6457]">{formatMonth(c.month, language)}</span>
+                </div>
+                <p style={{ fontFamily: F }} className="text-2xl font-bold text-[#191713] mb-1">
+                  {formatTemp(c.highC, tempUnit)} <span className="text-[#6B6457] font-medium text-base">/ {formatTemp(c.lowC, tempUnit)}</span>
+                </p>
+                <p style={{ fontFamily: S }} className="text-xs text-[#6B6457]">{tr(c.note, language)}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+
         {/* Explore more */}
         <div className="mb-16">
           <h2 style={{ fontFamily: F }} className="text-3xl font-bold text-[#191713] mb-1">{t("tdExploreMore", language)}</h2>
@@ -2182,16 +2251,65 @@ export default function App() {
   const [page, setPage] = useState("home");
   const [selectedTripId, setSelectedTripId] = useState(TRIPS[0].id);
   const [language, setLanguageState] = useState(() => getLanguageFromPath(window.location.pathname));
-  const [currency, setCurrency] = useState<"VND" | "USD">("USD");
+  const [currency, setCurrency] = useState<"VND" | "USD">(() => {
+    try {
+      return localStorage.getItem("vh_currency") === "VND" ? "VND" : "USD";
+    } catch {
+      return "USD";
+    }
+  });
+  const [tempUnit, setTempUnit] = useState<"C" | "F">(() => {
+    try {
+      return localStorage.getItem("vh_temp_unit") === "F" ? "F" : "C";
+    } catch {
+      return "C";
+    }
+  });
+
+  useEffect(() => {
+    try {
+      localStorage.setItem("vh_currency", currency);
+    } catch {
+      // ignore write failures (private browsing, storage disabled, etc.)
+    }
+  }, [currency]);
+
+  useEffect(() => {
+    try {
+      localStorage.setItem("vh_temp_unit", tempUnit);
+    } catch {
+      // ignore write failures (private browsing, storage disabled, etc.)
+    }
+  }, [tempUnit]);
 
   const setLanguage = (lang: typeof LANGUAGES[0]) => {
     setLanguageState(lang);
+    try {
+      localStorage.setItem("vh_language", lang.code);
+    } catch {
+      // ignore write failures (private browsing, storage disabled, etc.)
+    }
     const prefix = LANG_URL_PREFIX[lang.code];
     const newPath = prefix ? `/${prefix}` : "/";
     if (window.location.pathname !== newPath) {
       window.history.pushState({}, "", newPath);
     }
   };
+
+  // On a bare "/" visit (no explicit language in the URL), fall back to the visitor's
+  // remembered language from a previous visit instead of always defaulting to English.
+  useEffect(() => {
+    const hasExplicitPrefix = window.location.pathname.split("/").filter(Boolean).length > 0;
+    if (hasExplicitPrefix) return;
+    try {
+      const saved = localStorage.getItem("vh_language");
+      const savedLang = LANGUAGES.find((l) => l.code === saved);
+      if (savedLang && savedLang.code !== "EN") setLanguage(savedLang);
+    } catch {
+      // ignore read failures (private browsing, storage disabled, etc.)
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   useEffect(() => {
     const onPopState = () => setLanguageState(getLanguageFromPath(window.location.pathname));
@@ -2227,11 +2345,11 @@ export default function App() {
   return (
     <div className="bg-[#F5F2EC] min-h-screen">
       <Toaster position="top-center" richColors />
-      <Nav setPage={setPage} language={language} setLanguage={setLanguage} currency={currency} setCurrency={setCurrency} />
+      <Nav setPage={setPage} language={language} setLanguage={setLanguage} currency={currency} setCurrency={setCurrency} tempUnit={tempUnit} setTempUnit={setTempUnit} />
 
       <main>
         {page === "home" && <HomePage setPage={setPage} setSelectedTripId={setSelectedTripId} language={language} currency={currency} />}
-        {page === "trip" && <TripDetailPage tripId={selectedTripId} setSelectedTripId={setSelectedTripId} currency={currency} language={language} />}
+        {page === "trip" && <TripDetailPage tripId={selectedTripId} setSelectedTripId={setSelectedTripId} currency={currency} language={language} tempUnit={tempUnit} />}
         {page === "vetting" && <VettingPage />}
         {page === "people" && <OurPeoplePage />}
       </main>

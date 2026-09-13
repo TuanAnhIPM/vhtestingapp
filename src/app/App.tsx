@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import {
   Menu, X, ArrowRight, ChevronDown, ChevronUp,
-  Check, MapPin, Clock,
+  Check, MapPin, Clock, Cloud,
   Mail, Phone, Instagram, MessageCircle,
   Mic, Square, Send,
 } from "lucide-react";
@@ -897,15 +897,6 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
   region_grand_tour: { EN: "Saigon, Đà Lạt, Đà Nẵng, Hội An & Huế", ES: "Saigón, Đà Lạt, Đà Nẵng, Hội An y Huế", ZH: "西贡、大叻、岘港、会安与顺化", KO: "사이공, 달랏, 다낭, 호이안 & 후에" },
   region_north_vietnam_hagiang: { EN: "Hanoi, Ninh Bình & Hà Giang", ES: "Hanói, Ninh Bình y Hà Giang", ZH: "河内、宁平与河江", KO: "하노이, 닌빈 & 하장" },
 
-  tdWeatherLabel: { EN: "[Weather]", ES: "[Clima]", ZH: "[天气]", KO: "[날씨]" },
-  tdWeatherHeading: { EN: "What to Expect, Weather-Wise", ES: "Qué Esperar del Clima", ZH: "天气状况预览", KO: "날씨는 이렇습니다" },
-  tdWeatherSub: {
-    EN: "Typical daytime highs and overnight lows for this trip's destinations, based on when it's usually run.",
-    ES: "Máximas diurnas y mínimas nocturnas típicas para los destinos de este viaje, según la época en que suele realizarse.",
-    ZH: "根据本行程通常安排的时间，列出各目的地典型的白天最高温与夜间最低温。",
-    KO: "이 여행이 보통 진행되는 시기를 기준으로, 목적지별 낮 최고 기온과 밤 최저 기온을 안내합니다.",
-  },
-
   tagline_mekong_condao: { EN: "Floating markets before sunrise, then a night on a national park beach watching sea turtles nest.", ES: "Mercados flotantes antes del amanecer, luego una noche en una playa de parque nacional viendo anidar a las tortugas marinas.", ZH: "日出前的水上市场，夜晚在国家公园海滩观赏海龟产卵。", KO: "해 뜨기 전 수상시장을 둘러보고, 국립공원 해변에서 바다거북 산란을 지켜보는 밤을 보냅니다." },
   desc_mekong_condao: {
     EN: "This is a real itinerary we planned and ran — five days built around two things that don't wait for anyone: the floating market at Cái Răng, busiest in the first hour of light, and the sea turtles nesting on Hòn Bảy Cạnh, which come ashore on the tide's schedule, not ours. Everything in between — the homestay on Cồn Sơn, the flight out to Côn Đảo — is built around getting you to those two moments at the right time.",
@@ -957,6 +948,14 @@ const t = (key: string, language: { code: string }): string => {
 const tr = (entry: Record<string, string>, language: { code: string }): string =>
   entry[language.code] || entry.EN;
 
+// Matches an itinerary day to its trip's climate entry by checking whether the day's
+// location name contains one of the trip's known climate locations (e.g. "Fly to Côn Đảo"
+// matches the "Côn Đảo" climate entry). Days that don't match a known location (transit
+// legs, "Departure") simply show no weather badge rather than a guess.
+type ClimateEntry = { location: Record<string, string>; month: number; highC: number; lowC: number; note: Record<string, string> };
+const getDayClimate = (climate: ClimateEntry[], dayLocation: Record<string, string>): ClimateEntry | undefined =>
+  climate.find((c) => dayLocation.EN.includes(c.location.EN));
+
 const formatDayLabel = (day: number, language: { code: string }): string => {
   switch (language.code) {
     case "ES": return `Día ${day}`;
@@ -977,15 +976,6 @@ const formatDuration = (duration: string, language: { code: string }): string =>
     default: return `${n} days`;
   }
 };
-
-const MONTH_NAMES: Record<string, string[]> = {
-  EN: ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],
-  ES: ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"],
-  ZH: ["1月", "2月", "3月", "4月", "5月", "6月", "7月", "8月", "9月", "10月", "11月", "12月"],
-  KO: ["1월", "2월", "3월", "4월", "5월", "6월", "7월", "8월", "9월", "10월", "11월", "12월"],
-};
-const formatMonth = (monthIndex: number, language: { code: string }): string =>
-  (MONTH_NAMES[language.code] || MONTH_NAMES.EN)[monthIndex - 1] || "";
 
 // Converts a base Celsius reading to the viewer's chosen display unit.
 const formatTemp = (celsius: number, unit: "C" | "F"): string =>
@@ -1982,14 +1972,15 @@ function TripDetailPage({ tripId, setSelectedTripId, currency, language, tempUni
               {trip.itinerary.map((item, i) => {
                 const open = i === activeDay;
                 const isLast = i === trip.itinerary.length - 1;
+                const dayClimate = getDayClimate(trip.climate, item.location);
                 return (
                   <div key={item.day} className="flex gap-4">
                     <div className="flex flex-col items-center flex-shrink-0">
                       <div
                         style={{ fontFamily: F }}
-                        className={`w-9 h-9 rounded-full flex items-center justify-center text-xs font-bold transition-colors ${open ? "bg-[#004226] text-white" : "bg-white border border-[rgba(25,23,19,0.15)] text-[#191713]"}`}
+                        className={`px-3 h-7 rounded-full flex items-center justify-center text-xs font-bold whitespace-nowrap transition-colors ${open ? "bg-[#004226] text-white" : "bg-[#EDE9E0] text-[#191713]"}`}
                       >
-                        {item.day}
+                        {formatDayLabel(item.day, language)}
                       </div>
                       {!isLast && <div className="w-px flex-1 bg-[rgba(25,23,19,0.15)] my-1" />}
                     </div>
@@ -2006,7 +1997,14 @@ function TripDetailPage({ tripId, setSelectedTripId, currency, language, tempUni
                         />
                         <div className="flex-1 min-w-0">
                           <p style={{ fontFamily: S }} className="text-[11px] text-[#6B6457] flex items-center gap-1 mb-1">
-                            <MapPin size={11} className="flex-shrink-0" /> {formatDayLabel(item.day, language)} &middot; {tr(item.location, language)}
+                            <MapPin size={11} className="flex-shrink-0" /> {tr(item.location, language)}
+                            {dayClimate && (
+                              <>
+                                <span>&middot;</span>
+                                <Cloud size={11} className="flex-shrink-0" />
+                                {formatTemp(dayClimate.highC, tempUnit)}
+                              </>
+                            )}
                           </p>
                           <p style={{ fontFamily: F }} className="text-[15px] font-semibold text-[#191713] leading-snug truncate">
                             {tr(item.title, language)}
@@ -2050,27 +2048,6 @@ function TripDetailPage({ tripId, setSelectedTripId, currency, language, tempUni
             className="w-full object-cover rounded-2xl hidden md:block"
             style={{ aspectRatio: "4/5" }}
           />
-        </div>
-
-        {/* Weather */}
-        <div className="mb-16">
-          <p style={{ fontFamily: S }} className="text-[10px] uppercase tracking-[0.18em] text-[#6B6457] mb-2">{t("tdWeatherLabel", language)}</p>
-          <h2 style={{ fontFamily: F }} className="text-3xl font-bold text-[#191713] mb-1">{t("tdWeatherHeading", language)}</h2>
-          <p style={{ fontFamily: S }} className="text-sm text-[#6B6457] mb-8">{t("tdWeatherSub", language)}</p>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
-            {trip.climate.map((c) => (
-              <div key={tr(c.location, language)} className="rounded-2xl border border-[rgba(25,23,19,0.1)] bg-white p-5">
-                <div className="flex items-center justify-between mb-3">
-                  <p style={{ fontFamily: F }} className="text-base font-semibold text-[#191713]">{tr(c.location, language)}</p>
-                  <span style={{ fontFamily: S }} className="text-xs text-[#6B6457]">{formatMonth(c.month, language)}</span>
-                </div>
-                <p style={{ fontFamily: F }} className="text-2xl font-bold text-[#191713] mb-1">
-                  {formatTemp(c.highC, tempUnit)} <span className="text-[#6B6457] font-medium text-base">/ {formatTemp(c.lowC, tempUnit)}</span>
-                </p>
-                <p style={{ fontFamily: S }} className="text-xs text-[#6B6457]">{tr(c.note, language)}</p>
-              </div>
-            ))}
-          </div>
         </div>
 
         {/* Explore more */}

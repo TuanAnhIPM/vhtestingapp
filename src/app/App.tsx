@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import {
   Menu, X, ArrowRight, ChevronDown, ChevronUp,
   Check, MapPin, Clock,
-  Mail, Phone, Instagram, User, MessageCircle,
+  Mail, Phone, Instagram, MessageCircle,
   Mic, Square, Send,
 } from "lucide-react";
 import { Toaster } from "sonner";
@@ -705,8 +705,6 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
   navCurrencyLabel: { EN: "Currency", ES: "Moneda", ZH: "货币", KO: "통화" },
   navLanguageLabel: { EN: "Language", ES: "Idioma", ZH: "语言", KO: "언어" },
   navTempLabel: { EN: "Temperature", ES: "Temperatura", ZH: "温度", KO: "온도" },
-  navLogin: { EN: "Log in", ES: "Iniciar sesión", ZH: "登录", KO: "로그인" },
-  navSignup: { EN: "Sign up", ES: "Registrarse", ZH: "注册", KO: "회원가입" },
 
   footerTagline: { EN: "In Vietnamese Hangout, you can trust.", ES: "En Vietnamese Hangout, puedes confiar.", ZH: "信赖 Vietnamese Hangout。", KO: "Vietnamese Hangout, 믿으셔도 좋습니다." },
   footerDescription: {
@@ -949,7 +947,7 @@ function Nav({
   setCurrency: (c: "VND" | "USD") => void;
 }) {
   const [mobileOpen, setMobileOpen] = useState(false);
-  const [openMenu, setOpenMenu] = useState<"currency" | "language" | "temp" | "account" | null>(null);
+  const [openMenu, setOpenMenu] = useState<"currency" | "language" | "temp" | null>(null);
   const [tempUnit, setTempUnit] = useState<"C" | "F">("C");
   const [scrolled, setScrolled] = useState(false);
 
@@ -967,7 +965,7 @@ function Nav({
     window.scrollTo({ top: 0 });
   };
 
-  const toggleMenu = (menu: "currency" | "language" | "temp" | "account") => {
+  const toggleMenu = (menu: "currency" | "language" | "temp") => {
     setOpenMenu((cur) => (cur === menu ? null : menu));
   };
 
@@ -1034,25 +1032,6 @@ function Nav({
               °{tempUnit}
             </button>
 
-            {/* Account */}
-            <div className="relative">
-              <button
-                onClick={() => toggleMenu("account")}
-                className="flex items-center gap-1 bg-white border border-[rgba(25,23,19,0.12)] rounded-full pl-2 pr-2.5 py-1.5 hover:border-[rgba(25,23,19,0.3)] transition-colors"
-              >
-                <span className="w-6 h-6 rounded-full bg-[#004226] text-white flex items-center justify-center">
-                  <User size={13} />
-                </span>
-                <ChevronDown size={13} className="text-[#191713]" />
-              </button>
-              {openMenu === "account" && (
-                <div className="absolute top-full right-0 mt-2 bg-white rounded-xl border border-[rgba(25,23,19,0.1)] shadow-lg py-1.5 w-36 z-10">
-                  <button onClick={() => setOpenMenu(null)} className="w-full text-left px-3.5 py-2 text-[13px] text-[#191713] hover:bg-[#F5F2EC] font-semibold">{t("navLogin", language)}</button>
-                  <button onClick={() => setOpenMenu(null)} className="w-full text-left px-3.5 py-2 text-[13px] text-[#6B6457] hover:bg-[#F5F2EC]">{t("navSignup", language)}</button>
-                </div>
-              )}
-            </div>
-
           </div>
 
           <button className="md:hidden text-[#191713]" onClick={() => setMobileOpen(true)}>
@@ -1107,14 +1086,6 @@ function Nav({
                   className="text-[13px] px-3 py-1.5 rounded-full border border-[rgba(25,23,19,0.15)] text-[#191713]"
                 >
                   °{tempUnit}
-                </button>
-              </div>
-              <div className="pt-2 border-t border-[rgba(25,23,19,0.1)]">
-                <button className="flex items-center gap-2 text-[13px] text-[#191713] font-semibold">
-                  <span className="w-6 h-6 rounded-full bg-[#004226] text-white flex items-center justify-center">
-                    <User size={13} />
-                  </span>
-                  {t("navLogin", language)}
                 </button>
               </div>
             </div>
